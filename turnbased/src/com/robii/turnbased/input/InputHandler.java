@@ -8,9 +8,12 @@ import com.robii.turnbased.Constants;
 public class InputHandler implements GestureListener {
 
 	private Stage stage;
+	private float realCameraX, realCameraY;
 
 	public InputHandler(Stage stage) {
 		this.stage = stage;
+		realCameraX = 0;
+		realCameraY = 0;
 	}
 
 	@Override
@@ -38,9 +41,10 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
-		stage.getCamera().position.set(stage.getCamera().position.x - deltaX
-				* Constants.CAMERA_SENS, stage.getCamera().position.y + deltaY
-				* Constants.CAMERA_SENS, 0);
+		realCameraX = realCameraX - deltaX * Constants.CAMERA_SENS;
+		realCameraY = realCameraY + deltaY * Constants.CAMERA_SENS;
+
+		stage.getCamera().position.set((int) realCameraX, (int) realCameraY, 0);
 		return true;
 	}
 
