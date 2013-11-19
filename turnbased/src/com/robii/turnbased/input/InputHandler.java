@@ -12,8 +12,6 @@ public class InputHandler implements GestureListener {
 
 	public InputHandler(Stage stage) {
 		this.stage = stage;
-		realCameraX = 0;
-		realCameraY = 0;
 	}
 
 	@Override
