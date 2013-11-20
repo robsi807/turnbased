@@ -1,5 +1,7 @@
 package com.robii.turnbased.input;
 
+import java.awt.Point;
+
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
@@ -13,6 +15,7 @@ public class InputHandler implements GestureListener {
 	private float realCameraX, realCameraY;
 	private GameWorld world;
 	private Ray ray;
+	private Point clickTile;
 
 	public InputHandler(Stage stage, GameWorld world) {
 		this.stage = stage;
@@ -27,19 +30,25 @@ public class InputHandler implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 		ray = world.getStage().getCamera().getPickRay(x, y);
+		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
+		System.out.println("Zone: " + world.getMap()[clickTile.x][clickTile.y].getPlayerZone());
 
+		if (clickTile != null)
+			world.addTown(clickTile.x, clickTile.y, 1);
+
+		return false;
+	}
+
+	private Point getTilePosFromCoords(float x, float y) {
 		for (int j = 0; j < world.getMap()[0].length; j++) {
 			for (int i = 0; i < world.getMap().length; i++) {
 				if (world.getMap()[i][j].getHitbox().contains(ray.origin.x,
 						ray.origin.y)) {
-					System.out.println("Clicked tile @ "
-							+ world.getMap()[i][j].getTileX() + ", "
-							+ world.getMap()[i][j].getTileY());
+					return new Point(i, j);
 				}
 			}
 		}
-
-		return false;
+		return null;
 	}
 
 	@Override

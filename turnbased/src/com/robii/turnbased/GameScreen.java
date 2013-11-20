@@ -16,7 +16,8 @@ public class GameScreen implements Screen {
 
 	public GameScreen() {
 		stage = new Stage();
-		world = new GameWorld(stage);
+		//world loader (game loader) loads the information about the current state
+		world = new GameWorld(stage, Constants.NR_OF_PLAYERS);
 	}
 
 	@Override

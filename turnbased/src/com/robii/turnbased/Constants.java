@@ -10,4 +10,5 @@ public class Constants {
 	public static final int TILE_RIGHT_POINT_X = 0;
 	public static final int TILE_RIGHT_POINT_Y = 9;
 	public static final int TILE_BOTTOM_RIGHT_X = 23;
+	public static final int NR_OF_PLAYERS = 1; // is called in GameScreen, change this to dynamic depending on the incoming information about the current state of the game
 }

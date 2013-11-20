@@ -16,8 +16,10 @@ public class Tile extends Actor {
 
 	private GameWorld world;
 
-	private PlayerZone playerZone;
+	private int playerZone;
 	private int tileX, tileY;
+
+	private GameObject childObject;
 
 	private Polygon hitbox;
 
@@ -36,21 +38,16 @@ public class Tile extends Actor {
 			setY(tileY * Constants.TILE_HEIGHT + Constants.TILE_HEIGHT / 2);
 		}
 
-		 vertices = new float[] { 
-				 getX(), getY() + 11, 
-				 getX() + 8,getY() + 19, 
-				 getX() + 23, getY() + 19, 
-				 getX() + 31, getY() + 11, 
-				 getX() + 23, getY() + 3, 
-				 getX() + 8, getY() + 3, };
-//		vertices = new float[] { getX() - 5, getY() - 5, getX() - 5,
-//				getY() + 5, getX() + 5, getY() + 5, getX() + 5, getY() - 5, };
+		// this is just the hitbox for the tiles. It doesn't have to make sense
+		vertices = new float[] { getX(), getY() + 11, getX() + 8, getY() + 19,
+				getX() + 23, getY() + 19, getX() + 31, getY() + 11,
+				getX() + 23, getY() + 3, getX() + 8, getY() + 3, };
 
 		hitbox = new Polygon();
 		hitbox.setOrigin(getX(), getY());
 		hitbox.setVertices(vertices);
 
-		playerZone = PlayerZone.NONE;
+		playerZone = 0;
 	}
 
 	@Override
@@ -59,20 +56,23 @@ public class Tile extends Actor {
 		batch.draw(TextureHandler.tileGrass, getX(), getY());
 
 		switch (playerZone) {
-		case PLAYER1:
+		case 1:
 			batch.draw(TextureHandler.tilePlayer1Zone, getX(), getY());
 			break;
-		case PLAYER2:
+		case 2:
 			batch.draw(TextureHandler.tilePlayer2Zone, getX(), getY());
 			break;
-		case PLAYER3:
+		case 3:
 			batch.draw(TextureHandler.tilePlayer3Zone, getX(), getY());
 			break;
-		case PLAYER4:
+		case 4:
 			batch.draw(TextureHandler.tilePlayer4Zone, getX(), getY());
 			break;
 
 		}
+
+		if (childObject != null && childObject instanceof Visible)
+			((Visible) childObject).drawThis(batch);
 
 		// ZONE TYPE eg. MOUNTAIN, FOREST => render special!
 
@@ -87,16 +87,8 @@ public class Tile extends Actor {
 
 	public ArrayList<Tile> getAdjecentTiles() {
 		ArrayList<Tile> adjecent = new ArrayList<Tile>();
-
+		adjecent.add(world.getMap()[0][0]);
 		return adjecent;
-	}
-
-	public PlayerZone getPlayerZone() {
-		return playerZone;
-	}
-
-	public void setPlayerZone(PlayerZone PlayerZone) {
-		this.playerZone = PlayerZone;
 	}
 
 	public int getTileX() {
@@ -111,12 +103,24 @@ public class Tile extends Actor {
 		return hitbox;
 	}
 
+	public GameObject getChildObject() {
+		return childObject;
+	}
+
+	public void setChildObject(GameObject childObject) {
+		this.childObject = childObject;
+	}
+
 	public enum TileType {
 		GRASS, FOREST, MOUNTAIN;
 	}
 
-	public enum PlayerZone {
-		NONE, PLAYER1, PLAYER2, PLAYER3, PLAYER4;
+	public int getPlayerZone() {
+		return playerZone;
+	}
+
+	public void setPlayerZone(int playerZone) {
+		this.playerZone = playerZone;
 	}
 
 }
