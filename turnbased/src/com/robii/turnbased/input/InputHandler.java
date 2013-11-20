@@ -2,16 +2,21 @@ package com.robii.turnbased.input;
 
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.world.GameWorld;
 
 public class InputHandler implements GestureListener {
 
 	private Stage stage;
 	private float realCameraX, realCameraY;
+	private GameWorld world;
+	private Ray ray;
 
-	public InputHandler(Stage stage) {
+	public InputHandler(Stage stage, GameWorld world) {
 		this.stage = stage;
+		this.world = world;
 	}
 
 	@Override
@@ -21,13 +26,28 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
-		// TODO Auto-generated method stub
+		ray = world.getStage().getCamera().getPickRay(x, y);
+
+		for (int j = 0; j < world.getMap()[0].length; j++) {
+			for (int i = 0; i < world.getMap().length; i++) {
+				if (world.getMap()[i][j].getHitbox().contains(ray.origin.x,
+						ray.origin.y)) {
+					System.out.println("Clicked tile @ "
+							+ world.getMap()[i][j].getTileX() + ", "
+							+ world.getMap()[i][j].getTileY());
+				}
+			}
+		}
+
 		return false;
 	}
 
 	@Override
 	public boolean longPress(float x, float y) {
-		// TODO Auto-generated method stub
+		if (world.isDebugMode())
+			world.setDebugMode(false);
+		else
+			world.setDebugMode(true);
 		return false;
 	}
 

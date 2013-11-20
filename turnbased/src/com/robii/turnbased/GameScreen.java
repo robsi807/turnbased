@@ -37,7 +37,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input
-				.setInputProcessor(new GestureDetector(new InputHandler(stage)));
+				.setInputProcessor(new GestureDetector(new InputHandler(stage, world)));
 	}
 
 	@Override
