@@ -27,10 +27,10 @@ public class TextureHandler {
 	private static void initTiles() {
 		tiles = new Texture("images/tiles.png");
 		tileGrass = new TextureRegion(tiles, 0, 0, 32, 20);
-		tilePlayer1Zone = new TextureRegion(tiles, 32, 0, 32, 17);
-		tilePlayer2Zone = new TextureRegion(tiles, 2 * 32, 0, 32, 17);
-		tilePlayer3Zone = new TextureRegion(tiles, 3 * 32, 0, 32, 17);
-		tilePlayer4Zone = new TextureRegion(tiles, 4 * 32, 0, 32, 17);
+		tilePlayer1Zone = new TextureRegion(tiles, 32, 0, 32, 20);
+		tilePlayer2Zone = new TextureRegion(tiles, 2 * 32, 0, 32, 20);
+		tilePlayer3Zone = new TextureRegion(tiles, 3 * 32, 0, 32, 20);
+		tilePlayer4Zone = new TextureRegion(tiles, 4 * 32, 0, 32, 20);
 	}
 
 	private static void initObjects() {

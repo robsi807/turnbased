@@ -31,10 +31,15 @@ public class InputHandler implements GestureListener {
 	public boolean tap(float x, float y, int count, int button) {
 		ray = world.getStage().getCamera().getPickRay(x, y);
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
-		System.out.println("Zone: " + world.getMap()[clickTile.x][clickTile.y].getPlayerZone());
 
-		if (clickTile != null)
-			world.addTown(clickTile.x, clickTile.y, 1);
+		if (clickTile != null
+				&& world.getMap()[clickTile.x][clickTile.y].getChildObject() != null) {
+			world.selectObjectAtTile(clickTile.x, clickTile.y);
+			return true;
+		}
+		if (world.getSelectedObject() != null) {
+			world.unselectObject();
+		}
 
 		return false;
 	}
@@ -53,10 +58,14 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean longPress(float x, float y) {
-		if (world.isDebugMode())
-			world.setDebugMode(false);
-		else
-			world.setDebugMode(true);
+		ray = world.getStage().getCamera().getPickRay(x, y);
+		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
+
+		if (clickTile != null) {
+			world.addTown(clickTile.x, clickTile.y, 1);
+			return true;
+		}
+
 		return false;
 	}
 

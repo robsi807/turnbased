@@ -18,6 +18,7 @@ public class Tile extends Actor {
 
 	private int playerZone;
 	private int tileX, tileY;
+	private int yOffset = 0;
 
 	private GameObject childObject;
 
@@ -53,26 +54,26 @@ public class Tile extends Actor {
 	@Override
 	public void draw(SpriteBatch batch, float parentAlpha) {
 		super.draw(batch, parentAlpha);
-		batch.draw(TextureHandler.tileGrass, getX(), getY());
+		batch.draw(TextureHandler.tileGrass, getX(), getY() + yOffset);
 
 		switch (playerZone) {
 		case 1:
-			batch.draw(TextureHandler.tilePlayer1Zone, getX(), getY());
+			batch.draw(TextureHandler.tilePlayer1Zone, getX(), getY() + yOffset);
 			break;
 		case 2:
-			batch.draw(TextureHandler.tilePlayer2Zone, getX(), getY());
+			batch.draw(TextureHandler.tilePlayer2Zone, getX(), getY() + yOffset);
 			break;
 		case 3:
-			batch.draw(TextureHandler.tilePlayer3Zone, getX(), getY());
+			batch.draw(TextureHandler.tilePlayer3Zone, getX(), getY() + yOffset);
 			break;
 		case 4:
-			batch.draw(TextureHandler.tilePlayer4Zone, getX(), getY());
+			batch.draw(TextureHandler.tilePlayer4Zone, getX(), getY() + yOffset);
 			break;
 
 		}
 
 		if (childObject != null && childObject instanceof Visible)
-			((Visible) childObject).drawThis(batch);
+			((Visible) childObject).drawThis(batch, yOffset);
 
 		// ZONE TYPE eg. MOUNTAIN, FOREST => render special!
 
@@ -87,7 +88,7 @@ public class Tile extends Actor {
 
 	public ArrayList<Tile> getAdjecentTiles() {
 		ArrayList<Tile> adjecent = new ArrayList<Tile>();
-		adjecent.add(world.getMap()[0][0]);
+		adjecent.add(world.getMap()[0][0]); // fel!
 		return adjecent;
 	}
 
@@ -121,6 +122,14 @@ public class Tile extends Actor {
 
 	public void setPlayerZone(int playerZone) {
 		this.playerZone = playerZone;
+	}
+
+	public int getyOffset() {
+		return yOffset;
+	}
+
+	public void setyOffset(int yOffset) {
+		this.yOffset = yOffset;
 	}
 
 }

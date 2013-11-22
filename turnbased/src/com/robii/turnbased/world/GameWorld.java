@@ -17,6 +17,8 @@ public class GameWorld extends Actor {
 
 	private boolean debugMode = false;
 
+	private GameObject selectedObject;
+
 	private Stage stage;
 	private Tile[][] map;
 	private ArrayList<ArrayList<GameObject>> playerObjects;
@@ -32,6 +34,7 @@ public class GameWorld extends Actor {
 		stage.addActor(this);
 		map = new Tile[12][12];
 		visObjects = new ArrayList<Visible>();
+		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
 		fillWorld();
 	}
@@ -105,6 +108,25 @@ public class GameWorld extends Actor {
 
 	public ArrayList<Visible> getVisObjects() {
 		return visObjects;
+	}
+
+	public void selectObjectAtTile(int tileX, int tileY) {
+		unselectObject();
+		getMap()[tileX][tileY].setyOffset(3);
+		selectedObject = getMap()[tileX][tileY].getChildObject();
+
+	}
+
+	public GameObject getSelectedObject() {
+		return selectedObject;
+	}
+
+	public void unselectObject() {
+		if (selectedObject != null) {
+			map[selectedObject.getTileX()][selectedObject.getTileY()]
+					.setyOffset(0);
+			selectedObject = null;
+		}
 	}
 
 }
