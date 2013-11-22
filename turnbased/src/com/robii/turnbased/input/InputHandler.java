@@ -1,7 +1,5 @@
 package com.robii.turnbased.input;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
@@ -11,15 +9,15 @@ import com.robii.turnbased.world.GameWorld;
 
 public class InputHandler implements GestureListener {
 
-	private Stage stage;
 	private float realCameraX, realCameraY;
+	private boolean camaraInitialized = false;
 	private GameWorld world;
 	private Ray ray;
-	private Point clickTile;
+	private Vector2 clickTile;
 
-	public InputHandler(Stage stage, GameWorld world) {
-		this.stage = stage;
+	public InputHandler(GameWorld world) {
 		this.world = world;
+
 	}
 
 	@Override
@@ -33,8 +31,9 @@ public class InputHandler implements GestureListener {
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
 
 		if (clickTile != null
-				&& world.getMap()[clickTile.x][clickTile.y].getChildObject() != null) {
-			world.selectObjectAtTile(clickTile.x, clickTile.y);
+				&& world.getMap()[(int) clickTile.x][(int) clickTile.y]
+						.getChildObject() != null) {
+			world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
 			return true;
 		}
 		if (world.getSelectedObject() != null) {
@@ -44,12 +43,12 @@ public class InputHandler implements GestureListener {
 		return false;
 	}
 
-	private Point getTilePosFromCoords(float x, float y) {
+	private Vector2 getTilePosFromCoords(float x, float y) {
 		for (int j = 0; j < world.getMap()[0].length; j++) {
 			for (int i = 0; i < world.getMap().length; i++) {
 				if (world.getMap()[i][j].getHitbox().contains(ray.origin.x,
 						ray.origin.y)) {
-					return new Point(i, j);
+					return new Vector2(i, j);
 				}
 			}
 		}
@@ -62,7 +61,7 @@ public class InputHandler implements GestureListener {
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
 
 		if (clickTile != null) {
-			world.addTown(clickTile.x, clickTile.y, 1);
+			world.addTown((int) clickTile.x, (int) clickTile.y, 1);
 			return true;
 		}
 
@@ -77,10 +76,17 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
+		if (!camaraInitialized) {
+			realCameraX = world.getStage().getCamera().position.x;
+			realCameraY = world.getStage().getCamera().position.y;
+			camaraInitialized = true;
+
+		}
 		realCameraX = realCameraX - deltaX * Constants.CAMERA_SENS;
 		realCameraY = realCameraY + deltaY * Constants.CAMERA_SENS;
 
-		stage.getCamera().position.set((int) realCameraX, (int) realCameraY, 0);
+		world.getStage().getCamera().position.set((int) realCameraX,
+				(int) realCameraY, 0);
 		return true;
 	}
 

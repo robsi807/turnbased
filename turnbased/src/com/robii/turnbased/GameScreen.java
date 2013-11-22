@@ -30,7 +30,7 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(Constants.WIDTH, Constants.HEIGHT, true);
+		stage.setViewport(Constants.WIDTH * Constants.VIEWPORT_SCALE, Constants.HEIGHT * Constants.VIEWPORT_SCALE, true);
 		stage.getCamera().translate(-stage.getGutterWidth(),
 				-stage.getGutterHeight(), 0);
 	}
@@ -38,7 +38,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input
-				.setInputProcessor(new GestureDetector(new InputHandler(stage, world)));
+				.setInputProcessor(new GestureDetector(new InputHandler(world)));
 	}
 
 	@Override
