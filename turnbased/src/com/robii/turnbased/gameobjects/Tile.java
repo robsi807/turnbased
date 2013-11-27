@@ -24,6 +24,9 @@ public class Tile extends Actor {
 
 	private Polygon hitbox;
 
+	// used for the rendering of the player zones
+	private Color color;
+
 	private float[] vertices;
 
 	public Tile(int tileX, int tileY, GameWorld world) {
@@ -51,26 +54,10 @@ public class Tile extends Actor {
 		playerZone = 0;
 	}
 
-	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
+	public void drawTile(SpriteBatch batch, float parentAlpha) {
 		batch.draw(TextureHandler.tileGrass, getX(), getY() + yOffset);
 
-		switch (playerZone) {
-		case 1:
-			batch.draw(TextureHandler.tilePlayer1Zone, getX(), getY() + yOffset);
-			break;
-		case 2:
-			batch.draw(TextureHandler.tilePlayer2Zone, getX(), getY() + yOffset);
-			break;
-		case 3:
-			batch.draw(TextureHandler.tilePlayer3Zone, getX(), getY() + yOffset);
-			break;
-		case 4:
-			batch.draw(TextureHandler.tilePlayer4Zone, getX(), getY() + yOffset);
-			break;
-
-		}
+		
 
 		if (childObject != null && childObject instanceof Visible)
 			((Visible) childObject).drawThis(batch, yOffset);
@@ -88,8 +75,34 @@ public class Tile extends Actor {
 
 	public ArrayList<Tile> getAdjecentTiles() {
 		ArrayList<Tile> adjecent = new ArrayList<Tile>();
-		adjecent.add(world.getMap()[0][0]); // fel!
+
+		if (getTileX() == 0 || getTileX() % 2 == 0) {
+
+			adjecent.add(getTileIfValid(getTileX(), getTileY() + 1));
+			adjecent.add(getTileIfValid(getTileX() - 1, getTileY()));
+			adjecent.add(getTileIfValid(getTileX() + 1, getTileY()));
+			adjecent.add(getTileIfValid(getTileX() - 1, getTileY() - 1));
+			adjecent.add(getTileIfValid(getTileX(), getTileY() - 1));
+			adjecent.add(getTileIfValid(getTileX() + 1, getTileY() - 1));
+
+		} else {
+			adjecent.add(getTileIfValid(getTileX(), getTileY() - 1));
+			adjecent.add(getTileIfValid(getTileX() - 1, getTileY()));
+			adjecent.add(getTileIfValid(getTileX() + 1, getTileY()));
+			adjecent.add(getTileIfValid(getTileX() - 1, getTileY() + 1));
+			adjecent.add(getTileIfValid(getTileX(), getTileY() + 1));
+			adjecent.add(getTileIfValid(getTileX() + 1, getTileY() + 1));
+		}
+
 		return adjecent;
+	}
+
+	private Tile getTileIfValid(int tileX, int tileY) {
+		if (tileX < world.getMap().length && tileX >= 0
+				&& tileY < world.getMap()[0].length && tileY >= 0)
+			return world.getMap()[tileX][tileY];
+
+		return null;
 	}
 
 	public int getTileX() {

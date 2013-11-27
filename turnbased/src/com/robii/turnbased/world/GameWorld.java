@@ -22,18 +22,19 @@ public class GameWorld extends Actor {
 	private Stage stage;
 	private Tile[][] map;
 	private ArrayList<ArrayList<GameObject>> playerObjects;
-	private ArrayList<Visible> visObjects;
+	private ArrayList<Tile> tilesWithZone;
 	private WorldRenderer worldRenderer;
 
 	public GameWorld(Stage stage, int nrOfPlayers) {
 		this.stage = stage;
 		this.playerObjects = new ArrayList<ArrayList<GameObject>>();
+		tilesWithZone = new ArrayList<Tile>();
 		for (int i = 0; i < nrOfPlayers; i++) {
 			this.playerObjects.add(new ArrayList<GameObject>());
 		}
+
 		stage.addActor(this);
 		map = new Tile[12][12];
-		visObjects = new ArrayList<Visible>();
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
 		fillWorld();
@@ -66,7 +67,8 @@ public class GameWorld extends Actor {
 		map[tileX][tileY].setChildObject(addTown);
 
 		for (Tile t : map[tileX][tileY].getAdjecentTiles()) {
-			if (t.getPlayerZone() == 0) {
+			if (t != null && t.getPlayerZone() == 0) {
+				tilesWithZone.add(t);
 				t.setPlayerZone(player);
 			}
 		}
@@ -94,6 +96,14 @@ public class GameWorld extends Actor {
 		return position;
 	}
 
+	public void unselectObject() {
+		if (selectedObject != null) {
+			map[selectedObject.getTileX()][selectedObject.getTileY()]
+					.setyOffset(0);
+			selectedObject = null;
+		}
+	}
+
 	public boolean isDebugMode() {
 		return debugMode;
 	}
@@ -104,10 +114,6 @@ public class GameWorld extends Actor {
 
 	public ArrayList<ArrayList<GameObject>> getPlayerObjects() {
 		return playerObjects;
-	}
-
-	public ArrayList<Visible> getVisObjects() {
-		return visObjects;
 	}
 
 	public void selectObjectAtTile(int tileX, int tileY) {
@@ -121,12 +127,8 @@ public class GameWorld extends Actor {
 		return selectedObject;
 	}
 
-	public void unselectObject() {
-		if (selectedObject != null) {
-			map[selectedObject.getTileX()][selectedObject.getTileY()]
-					.setyOffset(0);
-			selectedObject = null;
-		}
+	public ArrayList<Tile> getTilesWithZone() {
+		return tilesWithZone;
 	}
 
 }
