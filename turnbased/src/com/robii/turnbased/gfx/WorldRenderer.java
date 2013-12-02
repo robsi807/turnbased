@@ -85,14 +85,10 @@ public class WorldRenderer {
 	private void drawObjects(SpriteBatch batch) {
 		for (int y = world.getMap()[0].length - 1; y >= 0; y--) {
 			for (int x = 1; x < world.getMap().length; x += 2) {
-				if (world.getMap()[x][y].getChildObject() != null)
-					((Visible) world.getMap()[x][y].getChildObject()).drawThis(
-							batch, world.getMap()[x][y].getyOffset());
+				world.getMap()[x][y].drawTile(batch, 1f);
 			}
 			for (int x = 0; x < world.getMap().length; x += 2) {
-				if (world.getMap()[x][y].getChildObject() != null)
-					((Visible) world.getMap()[x][y].getChildObject()).drawThis(
-							batch, world.getMap()[x][y].getyOffset());
+				world.getMap()[x][y].drawTile(batch, 1f);
 			}
 
 		}

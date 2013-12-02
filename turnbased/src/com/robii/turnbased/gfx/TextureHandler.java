@@ -18,6 +18,9 @@ public class TextureHandler {
 
 	// objets
 	public static TextureRegion objTown;
+	public static TextureRegion objForest;
+	public static TextureRegion objMountain;
+	public static TextureRegion objGoldmine;
 
 	public static void init() {
 		initTiles();
@@ -36,6 +39,9 @@ public class TextureHandler {
 	private static void initObjects() {
 		objects = new Texture("images/objects.png");
 		objTown = new TextureRegion(objects, 0, 0, 32, 26);
+		objForest = new TextureRegion(objects, 32 + 1, 0, 32, 26);
+		objMountain = new TextureRegion(objects, 2 * 32 + 2, 0, 32, 26);
+		objGoldmine = new TextureRegion(objects, 3 * 32 + 3, 0, 32, 26);
 	}
 
 	public static void dispose() {

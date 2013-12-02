@@ -21,18 +21,17 @@ public class Tile extends Actor {
 	private int yOffset = 0;
 
 	private GameObject childObject;
+	private TileType type;
 
 	private Polygon hitbox;
 
-	// used for the rendering of the player zones
-	private Color color;
-
 	private float[] vertices;
 
-	public Tile(int tileX, int tileY, GameWorld world) {
+	public Tile(int tileX, int tileY, TileType type, GameWorld world) {
 		this.world = world;
 		this.tileX = tileX;
 		this.tileY = tileY;
+		this.type = type;
 
 		setX(tileX * Constants.TILE_BOTTOM_RIGHT_X);
 
@@ -57,13 +56,21 @@ public class Tile extends Actor {
 	public void drawTile(SpriteBatch batch, float parentAlpha) {
 		batch.draw(TextureHandler.tileGrass, getX(), getY() + yOffset);
 
-		
-
 		if (childObject != null && childObject instanceof Visible)
 			((Visible) childObject).drawThis(batch, yOffset);
+		switch (type) {
+		case FOREST:
+			batch.draw(TextureHandler.objForest, getX(), getY());
+			break;
 
-		// ZONE TYPE eg. MOUNTAIN, FOREST => render special!
+		case GOLDMINE:
+			batch.draw(TextureHandler.objForest, getX(), getY());
+			break;
 
+		case MOUNTAIN:
+			batch.draw(TextureHandler.objForest, getX(), getY());
+			break;
+		}
 	}
 
 	public void drawDebug(ShapeRenderer debugRenderer) {
@@ -126,7 +133,7 @@ public class Tile extends Actor {
 	}
 
 	public enum TileType {
-		GRASS, FOREST, MOUNTAIN;
+		GRASS, FOREST, MOUNTAIN, GOLDMINE;
 	}
 
 	public int getPlayerZone() {

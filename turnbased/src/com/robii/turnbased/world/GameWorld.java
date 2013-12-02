@@ -11,6 +11,7 @@ import com.robii.turnbased.gameobjects.GameObject;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gameobjects.Visible;
+import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gfx.WorldRenderer;
 
 public class GameWorld extends Actor {
@@ -44,18 +45,15 @@ public class GameWorld extends Actor {
 
 	private void fillWorld() {
 
-		int tempX = 0, tempY = 0;
-
 		for (int y = 0; y < map[0].length; y++) {
 			for (int x = 0; x < map.length; x++) {
-
-				map[x][y] = new Tile(x, y, this);
+				map[x][y] = new Tile(x, y, TileType.GRASS, this);
 			}
-			tempX = 0;
 		}
 
 		addTown(4, 4, 1);
 
+		map[2][2] = new Tile(2, 2, TileType.FOREST, this);
 	}
 
 	// TEST FUNCTION, REMOVE!!
