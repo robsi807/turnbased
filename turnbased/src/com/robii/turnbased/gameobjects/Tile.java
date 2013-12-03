@@ -54,21 +54,20 @@ public class Tile extends Actor {
 	}
 
 	public void drawTile(SpriteBatch batch, float parentAlpha) {
-		batch.draw(TextureHandler.tileGrass, getX(), getY() + yOffset);
 
 		if (childObject != null && childObject instanceof Visible)
 			((Visible) childObject).drawThis(batch, yOffset);
 		switch (type) {
 		case FOREST:
-			batch.draw(TextureHandler.objForest, getX(), getY());
+			batch.draw(TextureHandler.objForest, getX()+3, getY() + 3);
 			break;
 
 		case GOLDMINE:
-			batch.draw(TextureHandler.objForest, getX(), getY());
+			batch.draw(TextureHandler.objGoldmine, getX()+5, getY()+ 2);
 			break;
 
 		case MOUNTAIN:
-			batch.draw(TextureHandler.objForest, getX(), getY());
+			batch.draw(TextureHandler.objMountain, getX()+3, getY()+ 3);
 			break;
 		}
 	}

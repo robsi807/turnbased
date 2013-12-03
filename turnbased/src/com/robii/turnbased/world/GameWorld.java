@@ -54,6 +54,10 @@ public class GameWorld extends Actor {
 		addTown(4, 4, 1);
 
 		map[2][2] = new Tile(2, 2, TileType.FOREST, this);
+		map[4][3] = new Tile(4, 3, TileType.GOLDMINE, this);
+		map[6][2] = new Tile(6, 2, TileType.MOUNTAIN, this);
+		map[10][5] = new Tile(10, 5, TileType.GOLDMINE, this);
+		map[5][8] = new Tile(5, 8, TileType.GOLDMINE, this);
 	}
 
 	// TEST FUNCTION, REMOVE!!
