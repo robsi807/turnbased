@@ -3,9 +3,20 @@ package com.robii.turnbased;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.input.GestureDetector;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.EventListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.robii.turnbased.gameobjects.Tile;
+import com.robii.turnbased.gfx.TextureHandler;
 import com.robii.turnbased.input.InputHandler;
 import com.robii.turnbased.world.GameWorld;
 
@@ -13,12 +24,35 @@ public class GameScreen implements Screen {
 
 	private Stage stage;
 	private GameWorld world;
+	private Table layout;
 
 	public GameScreen() {
 		stage = new Stage();
 		// world loader (game loader) loads the information about the current
 		// state
 		world = new GameWorld(stage, Constants.NR_OF_PLAYERS, 0);
+		layout = new Table();
+		layout.setFillParent(true);
+		stage.addActor(layout);
+
+		layout.add(world);
+
+		TextButtonStyle style = new TextButtonStyle();
+		style.up = TextureHandler.guiTurnOver;
+		style.down = TextureHandler.guiTurnOver;
+		style.font = new BitmapFont();
+
+		final TextButton button1 = new TextButton("End Turn", style);
+		
+		button1.addListener(new ChangeListener() {
+			public void changed(ChangeEvent event, Actor actor) {
+				System.out.println("Clicked! Is checked: "
+						+ button1.isChecked());
+				button1.setText("Good job!");
+			}
+		});
+		layout.addActor(button1);
+
 	}
 
 	@Override

@@ -2,12 +2,14 @@ package com.robii.turnbased.gfx;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 public class TextureHandler {
 
 	// texture files
 	private static Texture tiles;
 	private static Texture objects;
+	private static Texture gui;
 
 	// tiles
 	public static TextureRegion tileGrass;
@@ -21,10 +23,20 @@ public class TextureHandler {
 	public static TextureRegion objForest;
 	public static TextureRegion objMountain;
 	public static TextureRegion objGoldmine;
+	
+	
+	// gui
+	public static TextureRegionDrawable guiTurnOver;
 
 	public static void init() {
 		initTiles();
 		initObjects();
+		initGui();
+	}
+
+	private static void initGui() {
+		gui = new Texture("images/gui.png");
+		guiTurnOver = new TextureRegionDrawable(new TextureRegion(gui, 0, 0, 64, 16));
 	}
 
 	private static void initTiles() {

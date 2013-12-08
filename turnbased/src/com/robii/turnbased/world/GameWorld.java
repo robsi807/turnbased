@@ -39,7 +39,6 @@ public class GameWorld extends Actor {
 		players.add(new Player(Color.BLUE, 0, 0));
 		// FIX ABOVE!!
 
-		stage.addActor(this);
 		map = new Tile[12][12];
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
