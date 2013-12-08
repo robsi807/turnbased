@@ -2,16 +2,17 @@ package com.robii.turnbased.world;
 
 import java.util.ArrayList;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.gameobjects.GameObject;
+import com.robii.turnbased.gameobjects.Player;
 import com.robii.turnbased.gameobjects.Tile;
-import com.robii.turnbased.gameobjects.Town;
-import com.robii.turnbased.gameobjects.Visible;
 import com.robii.turnbased.gameobjects.Tile.TileType;
+import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gfx.WorldRenderer;
 
 public class GameWorld extends Actor {
@@ -22,26 +23,35 @@ public class GameWorld extends Actor {
 
 	private Stage stage;
 	private Tile[][] map;
-	private ArrayList<ArrayList<GameObject>> playerObjects;
+	private ArrayList<Player> players;
 	private ArrayList<Tile> tilesWithZone;
 	private WorldRenderer worldRenderer;
 
-	public GameWorld(Stage stage, int nrOfPlayers) {
+	private int currentPlayerId = 0;
+
+	public GameWorld(Stage stage, int nrOfPlayers, int currentPlayerId) {
 		this.stage = stage;
-		this.playerObjects = new ArrayList<ArrayList<GameObject>>();
+		this.players = new ArrayList<Player>();
+		this.currentPlayerId = currentPlayerId;
 		tilesWithZone = new ArrayList<Tile>();
-		for (int i = 0; i < nrOfPlayers; i++) {
-			this.playerObjects.add(new ArrayList<GameObject>());
-		}
+
+		// FIX THIS, THIS IS TEMP FOR TESTING
+		players.add(new Player(Color.BLUE, 0, 0));
+		// FIX ABOVE!!
 
 		stage.addActor(this);
 		map = new Tile[12][12];
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
 		fillWorld();
+		playerIncome(currentPlayerId);
 	}
 
 	// TEST FUNCTION, REMOVE!!
+
+	private void playerIncome(int currentPlayerId2) {
+
+	}
 
 	private void fillWorld() {
 
@@ -65,7 +75,7 @@ public class GameWorld extends Actor {
 	public void addTown(int tileX, int tileY, int player) {
 		Town addTown = new Town(tileX, tileY);
 		// player is the number not the index, that is why -1
-		playerObjects.get(player - 1).add(addTown);
+		players.get(player - 1).addObject(addTown);
 		map[tileX][tileY].setChildObject(addTown);
 
 		for (Tile t : map[tileX][tileY].getAdjecentTiles()) {
@@ -114,8 +124,8 @@ public class GameWorld extends Actor {
 		this.debugMode = debugMode;
 	}
 
-	public ArrayList<ArrayList<GameObject>> getPlayerObjects() {
-		return playerObjects;
+	public ArrayList<Player> getPlayers() {
+		return players;
 	}
 
 	public void selectObjectAtTile(int tileX, int tileY) {

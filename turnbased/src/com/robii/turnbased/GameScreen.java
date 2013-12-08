@@ -16,8 +16,9 @@ public class GameScreen implements Screen {
 
 	public GameScreen() {
 		stage = new Stage();
-		//world loader (game loader) loads the information about the current state
-		world = new GameWorld(stage, Constants.NR_OF_PLAYERS);
+		// world loader (game loader) loads the information about the current
+		// state
+		world = new GameWorld(stage, Constants.NR_OF_PLAYERS, 0);
 	}
 
 	@Override
@@ -30,7 +31,8 @@ public class GameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.setViewport(Constants.WIDTH * Constants.VIEWPORT_SCALE, Constants.HEIGHT * Constants.VIEWPORT_SCALE, true);
+		stage.setViewport(Constants.WIDTH * Constants.VIEWPORT_SCALE,
+				Constants.HEIGHT * Constants.VIEWPORT_SCALE, true);
 		stage.getCamera().translate(-stage.getGutterWidth(),
 				-stage.getGutterHeight(), 0);
 	}
