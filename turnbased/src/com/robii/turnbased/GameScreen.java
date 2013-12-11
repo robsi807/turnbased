@@ -35,7 +35,7 @@ public class GameScreen implements Screen {
 		layout.setFillParent(true);
 		stage.addActor(layout);
 
-		layout.add(world);
+		layout.addActor(world);
 
 		TextButtonStyle style = new TextButtonStyle();
 		style.up = TextureHandler.guiTurnOver;
@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
 				button1.setText("Good job!");
 			}
 		});
-		layout.addActor(button1);
+		layout.add(button1);
 
 	}
 

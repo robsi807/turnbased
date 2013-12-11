@@ -59,15 +59,15 @@ public class Tile extends Actor {
 			((Visible) childObject).drawThis(batch, yOffset);
 		switch (type) {
 		case FOREST:
-			batch.draw(TextureHandler.objForest, getX()+3, getY() + 3);
+			batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
 			break;
 
 		case GOLDMINE:
-			batch.draw(TextureHandler.objGoldmine, getX()+5, getY()+ 2);
+			batch.draw(TextureHandler.objGoldmine, getX() + 5, getY() + 2);
 			break;
 
 		case MOUNTAIN:
-			batch.draw(TextureHandler.objMountain, getX()+3, getY()+ 3);
+			batch.draw(TextureHandler.objMountain, getX() + 3, getY() + 3);
 			break;
 		}
 	}
@@ -149,6 +149,10 @@ public class Tile extends Actor {
 
 	public void setyOffset(int yOffset) {
 		this.yOffset = yOffset;
+	}
+
+	public TileType getType() {
+		return type;
 	}
 
 }
