@@ -3,9 +3,11 @@ package com.robii.turnbased.gfx;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.robii.turnbased.Constants;
 import com.robii.turnbased.gameobjects.GameObject;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Visible;
@@ -15,19 +17,30 @@ public class WorldRenderer {
 
 	private GameWorld world;
 	private ShapeRenderer debugRenderer;
+	private SpriteBatch batch;
 	// for rendering of the player zones
 	private Color color;
+
+	private OrthographicCamera camera;
 
 	private ArrayList<Vector2> playerZonePoints;
 
 	public WorldRenderer(GameWorld world) {
 		this.world = world;
+		this.camera = new OrthographicCamera(Constants.WIDTH
+				* Constants.VIEWPORT_SCALE, Constants.HEIGHT
+				* Constants.VIEWPORT_SCALE);
+		batch = new SpriteBatch();
 	}
 
-	public void drawWorld(SpriteBatch batch) {
+	public void drawWorld() {
+		camera.update();
+		batch.setProjectionMatrix(camera.combined);
+		batch.begin();
 		drawTiles(batch);
 		drawPlayerZones(batch);
 		drawObjects(batch);
+		batch.end();
 	}
 
 	private void drawTiles(SpriteBatch batch) {
@@ -93,5 +106,10 @@ public class WorldRenderer {
 
 		}
 
+	}
+
+	
+	public OrthographicCamera getCamera() {
+		return camera;
 	}
 }

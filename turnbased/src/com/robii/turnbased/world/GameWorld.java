@@ -15,13 +15,12 @@ import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gfx.WorldRenderer;
 
-public class GameWorld extends Actor {
+public class GameWorld {
 
 	private boolean debugMode = false;
 
 	private GameObject selectedObject;
 
-	private Stage stage;
 	private Tile[][] map;
 	private ArrayList<Player> players;
 	private ArrayList<Tile> tilesWithZone;
@@ -29,8 +28,7 @@ public class GameWorld extends Actor {
 
 	private int currentPlayerId = 0;
 
-	public GameWorld(Stage stage, int nrOfPlayers, int currentPlayerId) {
-		this.stage = stage;
+	public GameWorld(int nrOfPlayers, int currentPlayerId) {
 		this.players = new ArrayList<Player>();
 		this.currentPlayerId = currentPlayerId;
 		tilesWithZone = new ArrayList<Tile>();
@@ -71,6 +69,9 @@ public class GameWorld extends Actor {
 
 	// TEST FUNCTION, REMOVE!!
 
+	public void update(float delta) {
+	}
+	
 	public void addTown(int tileX, int tileY, int player) {
 		Town addTown = new Town(tileX, tileY);
 		// player is the number not the index, that is why -1
@@ -85,10 +86,8 @@ public class GameWorld extends Actor {
 		}
 	}
 
-	@Override
-	public void draw(SpriteBatch batch, float parentAlpha) {
-		super.draw(batch, parentAlpha);
-		worldRenderer.drawWorld(batch);
+	public void draw() {
+		worldRenderer.drawWorld();
 	}
 
 	public Tile[][] getMap() {
@@ -141,5 +140,11 @@ public class GameWorld extends Actor {
 	public ArrayList<Tile> getTilesWithZone() {
 		return tilesWithZone;
 	}
+
+	public WorldRenderer getWorldRenderer() {
+		return worldRenderer;
+	}
+
+	
 
 }

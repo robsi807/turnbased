@@ -27,7 +27,7 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
-		ray = world.getStage().getCamera().getPickRay(x, y);
+		ray = world.getWorldRenderer().getCamera().getPickRay(x, y);
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
 
 		if (clickTile != null
@@ -57,7 +57,7 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean longPress(float x, float y) {
-		ray = world.getStage().getCamera().getPickRay(x, y);
+		ray = world.getWorldRenderer().getCamera().getPickRay(x, y);
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
 
 		if (clickTile != null) {
@@ -77,15 +77,15 @@ public class InputHandler implements GestureListener {
 	@Override
 	public boolean pan(float x, float y, float deltaX, float deltaY) {
 		if (!camaraInitialized) {
-			realCameraX = world.getStage().getCamera().position.x;
-			realCameraY = world.getStage().getCamera().position.y;
+			realCameraX = world.getWorldRenderer().getCamera().position.x;
+			realCameraY = world.getWorldRenderer().getCamera().position.y;
 			camaraInitialized = true;
 
 		}
 		realCameraX = realCameraX - deltaX * Constants.CAMERA_SENS;
 		realCameraY = realCameraY + deltaY * Constants.CAMERA_SENS;
 
-		world.getStage().getCamera().position.set((int) realCameraX,
+		world.getWorldRenderer().getCamera().position.set((int) realCameraX,
 				(int) realCameraY, 0);
 		return true;
 	}
