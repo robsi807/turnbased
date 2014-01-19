@@ -41,13 +41,30 @@ public class GameWorld {
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
 		fillWorld();
-		playerIncome(currentPlayerId);
+		playerIncome();
 	}
 
 	// TEST FUNCTION, REMOVE!!
 
-	private void playerIncome(int currentPlayerId2) {
+	private void playerIncome() {
+		int income = 0;
+		for (GameObject obj : getPlayers().get(currentPlayerId).getObjects()) {
+			if (obj instanceof Town) {
+				for (Tile t : map[obj.getTileX()][obj.getTileY()]
+						.getAdjecentTiles()) {
+					if (t.getType() == TileType.GOLDMINE)
+						income += 5;
+				}
+			}
+		}
+		System.out.println("Income for player " + (currentPlayerId + 1) + " = "
+				+ income);
+	}
 
+	private void endTurn() {
+		currentPlayerId++;
+		if (currentPlayerId >= players.size())
+			currentPlayerId = 0;
 	}
 
 	private void fillWorld() {
@@ -59,6 +76,7 @@ public class GameWorld {
 		}
 
 		addTown(4, 4, 1);
+		addTown(5, 7, 1);
 
 		map[2][2] = new Tile(2, 2, TileType.FOREST, this);
 		map[4][3] = new Tile(4, 3, TileType.GOLDMINE, this);
