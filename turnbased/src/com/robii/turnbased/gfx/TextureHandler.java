@@ -26,7 +26,7 @@ public class TextureHandler {
 	
 	
 	// gui
-	public static TextureRegionDrawable guiTurnOver;
+	public static TextureRegion guiCoin;
 
 	public static void init() {
 		initTiles();
@@ -36,7 +36,7 @@ public class TextureHandler {
 
 	private static void initGui() {
 		gui = new Texture("images/gui.png");
-		guiTurnOver = new TextureRegionDrawable(new TextureRegion(gui, 0, 0, 64, 16));
+		guiCoin = new TextureRegion(new TextureRegion(gui, 0, 0, 12, 16));
 	}
 
 	private static void initTiles() {

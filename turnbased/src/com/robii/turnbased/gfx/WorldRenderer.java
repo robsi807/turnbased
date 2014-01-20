@@ -30,6 +30,7 @@ public class WorldRenderer {
 		this.camera = new OrthographicCamera(Constants.WIDTH
 				* Constants.VIEWPORT_SCALE, Constants.HEIGHT
 				* Constants.VIEWPORT_SCALE);
+		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0f);
 		batch = new SpriteBatch();
 	}
 
