@@ -63,11 +63,11 @@ public class Tile extends Actor {
 			break;
 
 		case GOLDMINE:
-			batch.draw(TextureHandler.objGoldmine, getX() + 5, getY() + 2);
+			batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
 			break;
 
 		case MOUNTAIN:
-			batch.draw(TextureHandler.objMountain, getX() + 3, getY() + 3);
+			batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
 			break;
 		}
 	}

@@ -10,28 +10,37 @@ public class TextureHandler {
 	private static Texture tiles;
 	private static Texture objects;
 	private static Texture gui;
+	private static Texture units;
 
 	// tiles
 	public static TextureRegion tileGrass;
-	public static TextureRegion tilePlayer1Zone;
-	public static TextureRegion tilePlayer2Zone;
-	public static TextureRegion tilePlayer3Zone;
-	public static TextureRegion tilePlayer4Zone;
+	public static TextureRegion tilePlayerZone;
 
 	// objets
-	public static TextureRegion objTown;
+	
 	public static TextureRegion objForest;
 	public static TextureRegion objMountain;
 	public static TextureRegion objGoldmine;
-	
-	
+
 	// gui
 	public static TextureRegion guiCoin;
 
+	// units
+	public static TextureRegion unitSoldier;
+	public static TextureRegion unitSoldierColor;
+	public static TextureRegion unitTown;
+	
 	public static void init() {
 		initTiles();
 		initObjects();
 		initGui();
+		initUnits();
+	}
+
+	private static void initUnits() {
+		units = new Texture("images/units.png");
+		unitSoldier = new TextureRegion(units, 0, 0, 14, 20);
+		unitTown = new TextureRegion(units, 32, 0, 32, 26);
 	}
 
 	private static void initGui() {
@@ -42,18 +51,14 @@ public class TextureHandler {
 	private static void initTiles() {
 		tiles = new Texture("images/tiles.png");
 		tileGrass = new TextureRegion(tiles, 0, 0, 32, 20);
-		tilePlayer1Zone = new TextureRegion(tiles, 32, 0, 32, 20);
-		tilePlayer2Zone = new TextureRegion(tiles, 2 * 32, 0, 32, 20);
-		tilePlayer3Zone = new TextureRegion(tiles, 3 * 32, 0, 32, 20);
-		tilePlayer4Zone = new TextureRegion(tiles, 4 * 32, 0, 32, 20);
+		tilePlayerZone = new TextureRegion(tiles, 32, 0, 32, 20);
 	}
 
 	private static void initObjects() {
 		objects = new Texture("images/objects.png");
-		objTown = new TextureRegion(objects, 0, 0, 32, 26);
-		objForest = new TextureRegion(objects, 32 + 1, 0, 32, 26);
-		objMountain = new TextureRegion(objects, 2 * 32 + 2, 0, 32, 26);
-		objGoldmine = new TextureRegion(objects, 3 * 32 + 3, 0, 32, 26);
+		objForest = new TextureRegion(objects, 0, 0, 32, 26);
+		objMountain = new TextureRegion(objects, 32, 0, 32, 26);
+		objGoldmine = new TextureRegion(objects, 64, 0, 32, 26);
 	}
 
 	public static void dispose() {

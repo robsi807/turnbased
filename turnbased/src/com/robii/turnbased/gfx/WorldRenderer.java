@@ -70,23 +70,25 @@ public class WorldRenderer {
 		for (Tile t : world.getTilesWithZone()) {
 
 			color = batch.getColor();
-			batch.setColor(color.r, color.g, color.b, 0.3f);
+			
 
 			switch (t.getPlayerZone()) {
 			case 1:
-				batch.draw(TextureHandler.tilePlayer1Zone, t.getX(), t.getY()
+				batch.setColor(0f, 0f, 1f, 0.3f);
+				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
 						+ t.getyOffset());
 				break;
 			case 2:
-				batch.draw(TextureHandler.tilePlayer2Zone, t.getX(), t.getY()
+				batch.setColor(color.r, color.g, color.b, 0.3f);
+				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
 						+ t.getyOffset());
 				break;
 			case 3:
-				batch.draw(TextureHandler.tilePlayer3Zone, t.getX(), t.getY()
+				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
 						+ t.getyOffset());
 				break;
 			case 4:
-				batch.draw(TextureHandler.tilePlayer4Zone, t.getX(), t.getY()
+				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
 						+ t.getyOffset());
 				break;
 

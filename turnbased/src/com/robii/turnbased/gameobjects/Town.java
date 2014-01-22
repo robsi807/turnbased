@@ -14,7 +14,7 @@ public class Town extends GameObject implements Visible, Clickable {
 	@Override
 	public void drawThis(SpriteBatch batch, int yOffset) {
 		position = GameWorld.getPositionForTile(getTileX(), getTileY());
-		batch.draw(TextureHandler.objTown, position.x + getOffsetFromTile().x,
+		batch.draw(TextureHandler.unitTown, position.x + getOffsetFromTile().x,
 				position.y + getOffsetFromTile().y + yOffset);
 	}
 
