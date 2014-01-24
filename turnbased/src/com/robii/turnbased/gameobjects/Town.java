@@ -20,12 +20,17 @@ public class Town extends GameObject implements Visible, Clickable {
 
 	@Override
 	public void onClick() {
-		// WHEN CLICKED!!
+		System.out.println("SHOULD OPEN A MENU");
 	}
 
 	@Override
 	public Vector2 getOffsetFromTile() {
 		return new Vector2(0, 3);
+	}
+
+	@Override
+	public void onUnselect() {
+		
 	}
 
 }

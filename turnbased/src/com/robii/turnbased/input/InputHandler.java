@@ -38,6 +38,7 @@ public class InputHandler implements GestureListener {
 		}
 		if (world.getSelectedObject() != null) {
 			world.unselectObject();
+			return true;
 		}
 
 		return false;
@@ -85,8 +86,8 @@ public class InputHandler implements GestureListener {
 		realCameraX = realCameraX - deltaX * Constants.CAMERA_SENS;
 		realCameraY = realCameraY + deltaY * Constants.CAMERA_SENS;
 
-		world.getWorldRenderer().getCamera().position.set((int) realCameraX,
-				(int) realCameraY, 0);
+		world.getWorldRenderer().getCamera().position.set(realCameraX,
+				realCameraY, 0);
 		return true;
 	}
 

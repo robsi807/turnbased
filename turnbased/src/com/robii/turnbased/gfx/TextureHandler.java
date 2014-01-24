@@ -39,7 +39,7 @@ public class TextureHandler {
 
 	private static void initUnits() {
 		units = new Texture("images/units.png");
-		unitSoldier = new TextureRegion(units, 0, 0, 14, 20);
+		unitSoldier = new TextureRegion(units, 0, 0, 32, 20);
 		unitTown = new TextureRegion(units, 32, 0, 32, 26);
 	}
 

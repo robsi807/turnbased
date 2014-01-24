@@ -39,7 +39,6 @@ public class GameScreen implements Screen {
 		world.update(delta);
 		world.draw();
 		drawGUI();
-		System.out.println(Gdx.graphics.getFramesPerSecond());
 	}
 
 	private void drawGUI() {

@@ -22,8 +22,10 @@ public class Tile extends Actor {
 
 	private GameObject childObject;
 	private TileType type;
+	private boolean movementHighlight;
 
 	private Polygon hitbox;
+	private Color color;
 
 	private float[] vertices;
 
@@ -55,21 +57,58 @@ public class Tile extends Actor {
 
 	public void drawTile(SpriteBatch batch, float parentAlpha) {
 
-		if (childObject != null && childObject instanceof Visible)
-			((Visible) childObject).drawThis(batch, yOffset);
-		switch (type) {
-		case FOREST:
-			batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
-			break;
+		// draw player zone
+		color = batch.getColor();
+		drawPlayerZone(batch);
 
-		case GOLDMINE:
-			batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
-			break;
+		// draw movement hightlight
 
-		case MOUNTAIN:
-			batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
-			break;
+		if (movementHighlight) {
+
 		}
+
+		if (childObject != null && childObject instanceof Visible) {
+			((Visible) childObject).drawThis(batch, yOffset);
+		} else {
+			switch (type) {
+			case FOREST:
+				batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
+				break;
+
+			case GOLDMINE:
+				batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
+				break;
+
+			case MOUNTAIN:
+				batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
+				break;
+			}
+		}
+	}
+
+	private void drawPlayerZone(SpriteBatch batch) {
+		switch (getPlayerZone()) {
+		case 1:
+			batch.setColor(0f, 0f, 1f, 0.3f);
+			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
+					+ getyOffset());
+			break;
+		case 2:
+			batch.setColor(color.r, color.g, color.b, 0.3f);
+			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
+					+ getyOffset());
+			break;
+		case 3:
+			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
+					+ getyOffset());
+			break;
+		case 4:
+			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
+					+ getyOffset());
+			break;
+
+		}
+		batch.setColor(color.r, color.g, color.b, 1f);
 	}
 
 	public void drawDebug(ShapeRenderer debugRenderer) {

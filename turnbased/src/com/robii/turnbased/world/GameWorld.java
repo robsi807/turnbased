@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
 import com.robii.turnbased.gameobjects.Player;
 import com.robii.turnbased.gameobjects.Tile;
@@ -75,21 +76,21 @@ public class GameWorld {
 			}
 		}
 
-		addTown(4, 4, 1);
-		addTown(5, 7, 1);
-
 		map[2][2] = new Tile(2, 2, TileType.FOREST, this);
 		map[4][3] = new Tile(4, 3, TileType.GOLDMINE, this);
 		map[6][2] = new Tile(6, 2, TileType.MOUNTAIN, this);
 		map[10][5] = new Tile(10, 5, TileType.GOLDMINE, this);
 		map[5][8] = new Tile(5, 8, TileType.GOLDMINE, this);
+
+		addTown(4, 4, 1);
+		addTown(5, 7, 1);
 	}
 
 	// TEST FUNCTION, REMOVE!!
 
 	public void update(float delta) {
 	}
-	
+
 	public void addTown(int tileX, int tileY, int player) {
 		Town addTown = new Town(tileX, tileY);
 		// player is the number not the index, that is why -1
@@ -148,6 +149,9 @@ public class GameWorld {
 		unselectObject();
 		getMap()[tileX][tileY].setyOffset(3);
 		selectedObject = getMap()[tileX][tileY].getChildObject();
+		if (selectedObject instanceof Clickable) {
+			((Clickable) selectedObject).onClick();
+		}
 
 	}
 
@@ -162,7 +166,5 @@ public class GameWorld {
 	public WorldRenderer getWorldRenderer() {
 		return worldRenderer;
 	}
-
-	
 
 }

@@ -30,7 +30,8 @@ public class WorldRenderer {
 		this.camera = new OrthographicCamera(Constants.WIDTH
 				* Constants.VIEWPORT_SCALE, Constants.HEIGHT
 				* Constants.VIEWPORT_SCALE);
-		camera.position.set(camera.viewportWidth/2, camera.viewportHeight/2, 0f);
+		camera.position.set(camera.viewportWidth / 2,
+				camera.viewportHeight / 2, 0f);
 		batch = new SpriteBatch();
 	}
 
@@ -38,9 +39,10 @@ public class WorldRenderer {
 		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
+
 		drawTiles(batch);
-		drawPlayerZones(batch);
 		drawObjects(batch);
+
 		batch.end();
 	}
 
@@ -65,39 +67,6 @@ public class WorldRenderer {
 
 	}
 
-	private void drawPlayerZones(SpriteBatch batch) {
-
-		for (Tile t : world.getTilesWithZone()) {
-
-			color = batch.getColor();
-			
-
-			switch (t.getPlayerZone()) {
-			case 1:
-				batch.setColor(0f, 0f, 1f, 0.3f);
-				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
-						+ t.getyOffset());
-				break;
-			case 2:
-				batch.setColor(color.r, color.g, color.b, 0.3f);
-				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
-						+ t.getyOffset());
-				break;
-			case 3:
-				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
-						+ t.getyOffset());
-				break;
-			case 4:
-				batch.draw(TextureHandler.tilePlayerZone, t.getX(), t.getY()
-						+ t.getyOffset());
-				break;
-
-			}
-			batch.setColor(color.r, color.g, color.b, 1f);
-
-		}
-	}
-
 	private void drawObjects(SpriteBatch batch) {
 		for (int y = world.getMap()[0].length - 1; y >= 0; y--) {
 			for (int x = 1; x < world.getMap().length; x += 2) {
@@ -111,7 +80,6 @@ public class WorldRenderer {
 
 	}
 
-	
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
