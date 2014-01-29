@@ -57,6 +57,8 @@ public class Tile extends Actor {
 
 	public void drawTile(SpriteBatch batch, float parentAlpha) {
 
+		//batch.draw(TextureHandler.tileGrass, getX(), getY() + getyOffset());
+
 		// draw player zone
 		color = batch.getColor();
 		drawPlayerZone(batch);
@@ -67,6 +69,9 @@ public class Tile extends Actor {
 
 		}
 
+	}
+
+	public void drawObjectOnTile(SpriteBatch batch) {
 		if (childObject != null && childObject instanceof Visible) {
 			((Visible) childObject).drawThis(batch, yOffset);
 		} else {

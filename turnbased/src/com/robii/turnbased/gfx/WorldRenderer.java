@@ -70,10 +70,10 @@ public class WorldRenderer {
 	private void drawObjects(SpriteBatch batch) {
 		for (int y = world.getMap()[0].length - 1; y >= 0; y--) {
 			for (int x = 1; x < world.getMap().length; x += 2) {
-				world.getMap()[x][y].drawTile(batch, 1f);
+				world.getMap()[x][y].drawObjectOnTile(batch);
 			}
 			for (int x = 0; x < world.getMap().length; x += 2) {
-				world.getMap()[x][y].drawTile(batch, 1f);
+				world.getMap()[x][y].drawObjectOnTile(batch);
 			}
 
 		}
