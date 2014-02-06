@@ -57,13 +57,10 @@ public class Tile extends Actor {
 
 	public void drawTile(SpriteBatch batch, float parentAlpha) {
 
-		//batch.draw(TextureHandler.tileGrass, getX(), getY() + getyOffset());
+		batch.draw(TextureHandler.tileGrass, getX(), getY() + getyOffset());
 
-		// draw player zone
 		color = batch.getColor();
 		drawPlayerZone(batch);
-
-		// draw movement hightlight
 
 		if (movementHighlight) {
 
@@ -79,11 +76,9 @@ public class Tile extends Actor {
 			case FOREST:
 				batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
 				break;
-
 			case GOLDMINE:
 				batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
 				break;
-
 			case MOUNTAIN:
 				batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
 				break;

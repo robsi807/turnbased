@@ -1,16 +1,10 @@
 package com.robii.turnbased.gfx;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.robii.turnbased.Constants;
-import com.robii.turnbased.gameobjects.GameObject;
-import com.robii.turnbased.gameobjects.Tile;
-import com.robii.turnbased.gameobjects.Visible;
 import com.robii.turnbased.world.GameWorld;
 
 public class WorldRenderer {
@@ -22,8 +16,6 @@ public class WorldRenderer {
 	private Color color;
 
 	private OrthographicCamera camera;
-
-	private ArrayList<Vector2> playerZonePoints;
 
 	public WorldRenderer(GameWorld world) {
 		this.world = world;
@@ -49,18 +41,10 @@ public class WorldRenderer {
 	private void drawTiles(SpriteBatch batch) {
 		for (int y = world.getMap()[0].length - 1; y >= 0; y--) {
 			for (int x = 1; x < world.getMap().length; x += 2) {
-				batch.draw(
-						TextureHandler.tileGrass,
-						world.getMap()[x][y].getX(),
-						world.getMap()[x][y].getY()
-								+ world.getMap()[x][y].getyOffset());
+				world.getMap()[x][y].drawTile(batch, 1f);
 			}
 			for (int x = 0; x < world.getMap().length; x += 2) {
-				batch.draw(
-						TextureHandler.tileGrass,
-						world.getMap()[x][y].getX(),
-						world.getMap()[x][y].getY()
-								+ world.getMap()[x][y].getyOffset());
+				world.getMap()[x][y].drawTile(batch, 1f);
 			}
 
 		}

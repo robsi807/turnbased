@@ -20,4 +20,10 @@ public class GameObject {
 		return tileY;
 	}
 
+	public void setTilePosition(int tileX, int tileY) {
+		this.tileX = tileX;
+		this.tileY = tileY;
+	}
+
+
 }

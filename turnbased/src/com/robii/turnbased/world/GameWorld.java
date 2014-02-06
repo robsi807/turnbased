@@ -15,6 +15,8 @@ import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gfx.WorldRenderer;
+import com.robii.turnbased.units.BasicMeleeUnit;
+import com.robii.turnbased.units.Unit;
 
 public class GameWorld {
 
@@ -84,9 +86,16 @@ public class GameWorld {
 
 		addTown(4, 4, 1);
 		addTown(5, 7, 1);
+
+		// adding test unit
+		addUnit(3, 3, 1, new BasicMeleeUnit(3, 3, this));
 	}
 
 	// TEST FUNCTION, REMOVE!!
+
+	private void addUnit(int tileX, int tileY, int player, Unit unit) {
+		
+	}
 
 	public void update(float delta) {
 	}

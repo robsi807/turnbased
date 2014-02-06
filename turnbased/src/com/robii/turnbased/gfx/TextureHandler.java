@@ -15,9 +15,9 @@ public class TextureHandler {
 	// tiles
 	public static TextureRegion tileGrass;
 	public static TextureRegion tilePlayerZone;
+	public static TextureRegion tileMovementHighlight;
 
 	// objets
-	
 	public static TextureRegion objForest;
 	public static TextureRegion objMountain;
 	public static TextureRegion objGoldmine;
@@ -26,7 +26,7 @@ public class TextureHandler {
 	public static TextureRegion guiCoin;
 
 	// units
-	public static TextureRegion unitSoldier;
+	public static TextureRegion unitBasicMelee;
 	public static TextureRegion unitSoldierColor;
 	public static TextureRegion unitTown;
 	
@@ -39,7 +39,7 @@ public class TextureHandler {
 
 	private static void initUnits() {
 		units = new Texture("images/units.png");
-		unitSoldier = new TextureRegion(units, 0, 0, 32, 20);
+		unitBasicMelee = new TextureRegion(units, 0, 0, 32, 20);
 		unitTown = new TextureRegion(units, 32, 0, 32, 26);
 	}
 
@@ -52,6 +52,7 @@ public class TextureHandler {
 		tiles = new Texture("images/tiles.png");
 		tileGrass = new TextureRegion(tiles, 0, 0, 32, 20);
 		tilePlayerZone = new TextureRegion(tiles, 32, 0, 32, 20);
+		tileMovementHighlight = new TextureRegion(tiles, 64, 0, 32, 20);
 	}
 
 	private static void initObjects() {
