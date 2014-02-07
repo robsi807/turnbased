@@ -16,6 +16,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		Movable {
 
 	private GameWorld world;
+	private ArrayList<Tile> moveableTiles;
 
 	public Unit(int tileX, int tileY, GameWorld world) {
 		super(tileX, tileY);
@@ -25,6 +26,10 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	@Override
 	public void onClick() {
 		// set movementHightlight to true for the affected tiles
+		moveableTiles = getPossibleMovement();
+		for (Tile t : moveableTiles) {
+			t.setMovementHighlight(true);
+		}
 	}
 
 	/**
@@ -47,13 +52,20 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 			if (currentTile.distance <= getMoveDistance()) {
 				possibleMovement.add(currentTile.tile);
 				for (Tile t : currentTile.tile.getAdjecentTiles()) {
-					tileQueue.add(new DistanceNode(currentTile.distance + 1,
-							currentTile.tile));
+					tileQueue
+							.add(new DistanceNode(currentTile.distance + 1, t));
 				}
 			}
 		}
-
+		possibleMovement.remove(world.getMap()[getTileX()][getTileY()]);
 		return possibleMovement;
+	}
+
+	@Override
+	public void onUnselect() {
+		for (Tile t : moveableTiles) {
+			t.setMovementHighlight(false);
+		}
 	}
 
 	@Override

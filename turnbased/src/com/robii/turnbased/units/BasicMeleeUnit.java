@@ -15,7 +15,7 @@ public class BasicMeleeUnit extends Unit {
 	public void drawThis(SpriteBatch batch, int yOffset) {
 		position = GameWorld.getPositionForTile(getTileX(), getTileY());
 		batch.draw(TextureHandler.unitBasicMelee, position.x
-				+ getOffsetFromTile().x, position.y + getOffsetFromTile().y
+				+ getOffsetFromTile().x, position.y + 10 + getOffsetFromTile().y
 				+ yOffset);
 	}
 
@@ -31,7 +31,7 @@ public class BasicMeleeUnit extends Unit {
 
 	@Override
 	public int getMoveDistance() {
-		return 1;
+		return 3;
 	}
 
 }

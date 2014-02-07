@@ -94,7 +94,8 @@ public class GameWorld {
 	// TEST FUNCTION, REMOVE!!
 
 	private void addUnit(int tileX, int tileY, int player, Unit unit) {
-		
+		players.get(player - 1).addObject(unit);
+		map[tileX][tileY].setChildObject(unit);
 	}
 
 	public void update(float delta) {
@@ -138,6 +139,11 @@ public class GameWorld {
 		if (selectedObject != null) {
 			map[selectedObject.getTileX()][selectedObject.getTileY()]
 					.setyOffset(0);
+			System.out.println("unselect unit");
+			if (selectedObject instanceof Clickable){
+				System.out.println("unselect is instance of clickable");
+				((Clickable) selectedObject).onUnselect();
+			}
 			selectedObject = null;
 		}
 	}

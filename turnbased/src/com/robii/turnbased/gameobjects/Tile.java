@@ -63,7 +63,10 @@ public class Tile extends Actor {
 		drawPlayerZone(batch);
 
 		if (movementHighlight) {
-
+			batch.setColor(1f, 0.9f, 0f, 0.9f);
+			batch.draw(TextureHandler.tileMovementHighlight, getX(), getY()
+					+ getyOffset());
+			batch.setColor(color.r, color.g, color.b, 1f);
 		}
 
 	}
@@ -191,7 +194,17 @@ public class Tile extends Actor {
 	}
 
 	public TileType getType() {
+
 		return type;
 	}
+
+	public boolean isMovementHighlight() {
+		return movementHighlight;
+	}
+
+	public void setMovementHighlight(boolean movementHighlight) {
+		this.movementHighlight = movementHighlight;
+	}
+	
 
 }
