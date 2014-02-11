@@ -15,17 +15,20 @@ import com.robii.turnbased.world.GameWorld;
 public abstract class Unit extends GameObject implements Visible, Clickable,
 		Movable {
 
+	public static final int MAX_MOVE_DISTANCE = 3;
 	private GameWorld world;
 	private ArrayList<Tile> moveableTiles;
+
+	private int moveDistanceLeft;
 
 	public Unit(int tileX, int tileY, GameWorld world) {
 		super(tileX, tileY);
 		this.world = world;
+		moveDistanceLeft = MAX_MOVE_DISTANCE;
 	}
 
 	@Override
 	public void onClick() {
-		// set movementHightlight to true for the affected tiles
 		moveableTiles = getPossibleMovement();
 		for (Tile t : moveableTiles) {
 			t.setMovementHighlight(true);
@@ -40,6 +43,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private ArrayList<Tile> getPossibleMovement() {
 
 		ArrayList<Tile> possibleMovement = new ArrayList<Tile>();
+		ArrayList<Tile> visited = new ArrayList<Tile>();
 		DistanceNode currentTile;
 
 		Queue<DistanceNode> tileQueue = new LinkedList<DistanceNode>();
@@ -49,12 +53,14 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
-			if (currentTile.distance <= getMoveDistance()) {
+			if (currentTile.distance <= getMoveDistance()
+					&& !visited.contains(currentTile.tile)) {
 				possibleMovement.add(currentTile.tile);
 				for (Tile t : currentTile.tile.getAdjecentTiles()) {
 					tileQueue
 							.add(new DistanceNode(currentTile.distance + 1, t));
 				}
+				visited.add(currentTile.tile);
 			}
 		}
 		possibleMovement.remove(world.getMap()[getTileX()][getTileY()]);
@@ -63,9 +69,13 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	@Override
 	public void onUnselect() {
+		int stuffs = 0;
 		for (Tile t : moveableTiles) {
+			stuffs++;
 			t.setMovementHighlight(false);
 		}
+		System.out.println("unselected the stuffs, movement removed from "
+				+ stuffs);
 	}
 
 	@Override
@@ -73,6 +83,12 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		setTilePosition(tileX, tileY);
 	}
 
-	public abstract int getMoveDistance();
+	public void resetMoveDistance() {
+		moveDistanceLeft = MAX_MOVE_DISTANCE;
+	}
+
+	public int getMoveDistance() {
+		return moveDistanceLeft;
+	}
 
 }
