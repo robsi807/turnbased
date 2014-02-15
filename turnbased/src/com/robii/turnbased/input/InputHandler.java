@@ -14,9 +14,11 @@ public class InputHandler implements GestureListener {
 	private GameWorld world;
 	private Ray ray;
 	private Vector2 clickTile;
+	private InputState inputState;
 
 	public InputHandler(GameWorld world) {
 		this.world = world;
+		inputState = InputState.SELECT_UNIT;
 
 	}
 
@@ -29,16 +31,30 @@ public class InputHandler implements GestureListener {
 	public boolean tap(float x, float y, int count, int button) {
 		ray = world.getWorldRenderer().getCamera().getPickRay(x, y);
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
+		if (clickTile == null)
+			return false;
+		switch (inputState) {
+		case MOVE_UNIT:
 
-		if (clickTile != null
-				&& world.getMap()[(int) clickTile.x][(int) clickTile.y]
-						.getChildObject() != null) {
-			world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
-			return true;
-		}
-		if (world.getSelectedObject() != null) {
-			world.unselectObject();
-			return true;
+			if (world.getSelectedObject() != null) {
+				world.unselectObject();
+				inputState = InputState.SELECT_UNIT;
+				return true;
+			}
+			break;
+
+		case SELECT_UNIT:
+
+			if (world.getMap()[(int) clickTile.x][(int) clickTile.y]
+					.getChildObject() != null) {
+
+				world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
+				inputState = InputState.MOVE_UNIT;
+				return true;
+
+			}
+			break;
+
 		}
 
 		return false;
@@ -108,6 +124,10 @@ public class InputHandler implements GestureListener {
 			Vector2 pointer1, Vector2 pointer2) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	public enum InputState {
+		SELECT_UNIT, MOVE_UNIT, MENU;
 	}
 
 }
