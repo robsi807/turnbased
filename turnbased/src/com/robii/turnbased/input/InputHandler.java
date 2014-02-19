@@ -47,11 +47,19 @@ public class InputHandler implements GestureListener {
 						&& world.getMap()
 								.getTile((int) clickTile.x, (int) clickTile.y)
 								.isMovementHighlight()) {
+					// reset the y offset of the tile
+					world.getMap()
+					.getTile((int) clickTile.x, (int) clickTile.y)
+					.setyOffset(0);
+					// removing the child object from the current tile
 					world.getMap()
 							.getTile((int) clickTile.x, (int) clickTile.y)
 							.setChildObject(null);
+					// move the object to the new tile
 					selectedObj.setTilePosition((int) clickTile.x,
 							(int) clickTile.y);
+					
+					// set the child object of that tile to the moved object
 					world.getMap()
 							.getTile((int) clickTile.x, (int) clickTile.y)
 							.setChildObject(selectedObj);
@@ -73,7 +81,7 @@ public class InputHandler implements GestureListener {
 				if (Unit.class.isAssignableFrom(world.getSelectedObject()
 						.getClass())) {
 					inputState = InputState.MOVE_UNIT;
-				} // else if och så building som inte finns än
+				} // else if och sï¿½ building som inte finns ï¿½n
 
 				return true;
 

@@ -50,6 +50,10 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 		tileQueue.add(new DistanceNode(0, world.getMap().getTile(getTileX(),
 				getTileY())));
+		if (tileQueue.peek() == null)
+			System.out.println("peek == null");
+		System.out.println("getting possible movement from " + getTileX()
+				+ ", " + getTileY());
 
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
@@ -88,6 +92,10 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	public int getMoveDistance() {
 		return moveDistanceLeft;
+	}
+
+	public ArrayList<Tile> getMoveableTiles() {
+		return moveableTiles;
 	}
 
 }
