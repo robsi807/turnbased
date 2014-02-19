@@ -1,7 +1,5 @@
 package com.robii.turnbased.gameobjects;
 
-import java.util.ArrayList;
-
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -10,11 +8,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.gfx.TextureHandler;
-import com.robii.turnbased.world.GameWorld;
 
 public class Tile extends Actor {
-
-	private GameWorld world;
 
 	private int playerZone;
 	private int tileX, tileY;
@@ -29,8 +24,7 @@ public class Tile extends Actor {
 
 	private float[] vertices;
 
-	public Tile(int tileX, int tileY, TileType type, GameWorld world) {
-		this.world = world;
+	public Tile(int tileX, int tileY, TileType type) {
 		this.tileX = tileX;
 		this.tileY = tileY;
 		this.type = type;
@@ -121,38 +115,6 @@ public class Tile extends Actor {
 		debugRenderer.end();
 	}
 
-	public ArrayList<Tile> getAdjecentTiles() {
-		ArrayList<Tile> adjecent = new ArrayList<Tile>();
-
-		if (getTileX() == 0 || getTileX() % 2 == 0) {
-
-			adjecent.add(getTileIfValid(getTileX(), getTileY() + 1));
-			adjecent.add(getTileIfValid(getTileX() - 1, getTileY()));
-			adjecent.add(getTileIfValid(getTileX() + 1, getTileY()));
-			adjecent.add(getTileIfValid(getTileX() - 1, getTileY() - 1));
-			adjecent.add(getTileIfValid(getTileX(), getTileY() - 1));
-			adjecent.add(getTileIfValid(getTileX() + 1, getTileY() - 1));
-
-		} else {
-			adjecent.add(getTileIfValid(getTileX(), getTileY() - 1));
-			adjecent.add(getTileIfValid(getTileX() - 1, getTileY()));
-			adjecent.add(getTileIfValid(getTileX() + 1, getTileY()));
-			adjecent.add(getTileIfValid(getTileX() - 1, getTileY() + 1));
-			adjecent.add(getTileIfValid(getTileX(), getTileY() + 1));
-			adjecent.add(getTileIfValid(getTileX() + 1, getTileY() + 1));
-		}
-
-		return adjecent;
-	}
-
-	private Tile getTileIfValid(int tileX, int tileY) {
-		if (tileX < world.getMap().length && tileX >= 0
-				&& tileY < world.getMap()[0].length && tileY >= 0)
-			return world.getMap()[tileX][tileY];
-
-		return null;
-	}
-
 	public int getTileX() {
 		return tileX;
 	}
@@ -205,6 +167,5 @@ public class Tile extends Actor {
 	public void setMovementHighlight(boolean movementHighlight) {
 		this.movementHighlight = movementHighlight;
 	}
-	
 
 }

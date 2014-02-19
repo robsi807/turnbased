@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -24,9 +25,9 @@ public class GameWorld {
 
 	private GameObject selectedObject;
 
-	private Tile[][] map;
+	private GameMap map;
+
 	private ArrayList<Player> players;
-	private ArrayList<Tile> tilesWithZone;
 	private WorldRenderer worldRenderer;
 
 	private int currentPlayerId = 0;
@@ -34,34 +35,28 @@ public class GameWorld {
 	public GameWorld(int nrOfPlayers, int currentPlayerId) {
 		this.players = new ArrayList<Player>();
 		this.currentPlayerId = currentPlayerId;
-		tilesWithZone = new ArrayList<Tile>();
 
 		// FIX THIS, THIS IS TEMP FOR TESTING
 		players.add(new Player(Color.BLUE, 0, 0));
 		// FIX ABOVE!!
 
-		map = new Tile[12][12];
+		map = new GameMap(this);
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
-		fillWorld();
 		playerIncome();
 	}
-
-	// TEST FUNCTION, REMOVE!!
 
 	private void playerIncome() {
 		int income = 0;
 		for (GameObject obj : getPlayers().get(currentPlayerId).getObjects()) {
 			if (obj instanceof Town) {
-				for (Tile t : map[obj.getTileX()][obj.getTileY()]
-						.getAdjecentTiles()) {
+				for (Tile t : map.getAdjecentTiles(obj.getTileX(),
+						obj.getTileY())) {
 					if (t.getType() == TileType.GOLDMINE)
 						income += 5;
 				}
 			}
 		}
-		System.out.println("Income for player " + (currentPlayerId + 1) + " = "
-				+ income);
 	}
 
 	private void endTurn() {
@@ -70,56 +65,11 @@ public class GameWorld {
 			currentPlayerId = 0;
 	}
 
-	private void fillWorld() {
-
-		for (int y = 0; y < map[0].length; y++) {
-			for (int x = 0; x < map.length; x++) {
-				map[x][y] = new Tile(x, y, TileType.GRASS, this);
-			}
-		}
-
-		map[2][2] = new Tile(2, 2, TileType.FOREST, this);
-		map[4][3] = new Tile(4, 3, TileType.GOLDMINE, this);
-		map[6][2] = new Tile(6, 2, TileType.MOUNTAIN, this);
-		map[10][5] = new Tile(10, 5, TileType.GOLDMINE, this);
-		map[5][8] = new Tile(5, 8, TileType.GOLDMINE, this);
-
-		addTown(4, 4, 1);
-		addTown(5, 7, 1);
-
-		// adding test unit
-		addUnit(3, 3, 1, new BasicMeleeUnit(3, 3, this));
-	}
-
-	// TEST FUNCTION, REMOVE!!
-
-	private void addUnit(int tileX, int tileY, int player, Unit unit) {
-		players.get(player - 1).addObject(unit);
-		map[tileX][tileY].setChildObject(unit);
-	}
-
-	public void update(float delta) {
-	}
-
-	public void addTown(int tileX, int tileY, int player) {
-		Town addTown = new Town(tileX, tileY);
-		// player is the number not the index, that is why -1
-		players.get(player - 1).addObject(addTown);
-		map[tileX][tileY].setChildObject(addTown);
-
-		for (Tile t : map[tileX][tileY].getAdjecentTiles()) {
-			if (t != null && t.getPlayerZone() == 0) {
-				tilesWithZone.add(t);
-				t.setPlayerZone(player);
-			}
-		}
-	}
-
 	public void draw() {
 		worldRenderer.drawWorld();
 	}
 
-	public Tile[][] getMap() {
+	public GameMap getMap() {
 		return map;
 	}
 
@@ -136,12 +86,12 @@ public class GameWorld {
 	}
 
 	public void unselectObject() {
+
 		if (selectedObject != null) {
-			map[selectedObject.getTileX()][selectedObject.getTileY()]
+			map.getTile(selectedObject.getTileX(), selectedObject.getTileY())
 					.setyOffset(0);
-			System.out.println("unselect unit");
-			if (selectedObject instanceof Clickable){
-				System.out.println("unselect is instance of clickable");
+
+			if (selectedObject instanceof Clickable) {
 				((Clickable) selectedObject).onUnselect();
 			}
 			selectedObject = null;
@@ -162,8 +112,8 @@ public class GameWorld {
 
 	public void selectObjectAtTile(int tileX, int tileY) {
 		unselectObject();
-		getMap()[tileX][tileY].setyOffset(3);
-		selectedObject = getMap()[tileX][tileY].getChildObject();
+		map.getTile(tileX, tileY).setyOffset(3);
+		selectedObject = map.getTile(tileX, tileY).getChildObject();
 		if (selectedObject instanceof Clickable) {
 			((Clickable) selectedObject).onClick();
 		}
@@ -172,10 +122,6 @@ public class GameWorld {
 
 	public GameObject getSelectedObject() {
 		return selectedObject;
-	}
-
-	public ArrayList<Tile> getTilesWithZone() {
-		return tilesWithZone;
 	}
 
 	public WorldRenderer getWorldRenderer() {

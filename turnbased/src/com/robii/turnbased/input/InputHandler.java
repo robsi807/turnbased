@@ -5,6 +5,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.gameobjects.GameObject;
+import com.robii.turnbased.units.BasicMeleeUnit;
+import com.robii.turnbased.units.Unit;
 import com.robii.turnbased.world.GameWorld;
 
 public class InputHandler implements GestureListener {
@@ -34,9 +37,26 @@ public class InputHandler implements GestureListener {
 		if (clickTile == null)
 			return false;
 		switch (inputState) {
-		case MOVE_UNIT:
 
-			if (world.getSelectedObject() != null) {
+		case MOVE_UNIT:
+			GameObject selectedObj = world.getSelectedObject();
+
+			if (selectedObj != null) {
+				if (world.getMap()
+						.getTile((int) clickTile.x, (int) clickTile.y) != null
+						&& world.getMap()
+								.getTile((int) clickTile.x, (int) clickTile.y)
+								.isMovementHighlight()) {
+					world.getMap()
+							.getTile((int) clickTile.x, (int) clickTile.y)
+							.setChildObject(null);
+					selectedObj.setTilePosition((int) clickTile.x,
+							(int) clickTile.y);
+					world.getMap()
+							.getTile((int) clickTile.x, (int) clickTile.y)
+							.setChildObject(selectedObj);
+
+				}
 				world.unselectObject();
 				inputState = InputState.SELECT_UNIT;
 				return true;
@@ -45,11 +65,16 @@ public class InputHandler implements GestureListener {
 
 		case SELECT_UNIT:
 
-			if (world.getMap()[(int) clickTile.x][(int) clickTile.y]
+			if (world.getMap().getTile((int) clickTile.x, (int) clickTile.y)
 					.getChildObject() != null) {
 
 				world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
-				inputState = InputState.MOVE_UNIT;
+
+				if (Unit.class.isAssignableFrom(world.getSelectedObject()
+						.getClass())) {
+					inputState = InputState.MOVE_UNIT;
+				} // else if och så building som inte finns än
+
 				return true;
 
 			}
@@ -61,10 +86,10 @@ public class InputHandler implements GestureListener {
 	}
 
 	private Vector2 getTilePosFromCoords(float x, float y) {
-		for (int j = 0; j < world.getMap()[0].length; j++) {
-			for (int i = 0; i < world.getMap().length; i++) {
-				if (world.getMap()[i][j].getHitbox().contains(ray.origin.x,
-						ray.origin.y)) {
+		for (int j = 0; j < world.getMap().getMapTileHeight(); j++) {
+			for (int i = 0; i < world.getMap().getMapTileWidth(); i++) {
+				if (world.getMap().getTile(i, j).getHitbox()
+						.contains(ray.origin.x, ray.origin.y)) {
 					return new Vector2(i, j);
 				}
 			}
@@ -78,7 +103,7 @@ public class InputHandler implements GestureListener {
 		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
 
 		if (clickTile != null) {
-			world.addTown((int) clickTile.x, (int) clickTile.y, 1);
+			world.getMap().addTown((int) clickTile.x, (int) clickTile.y, 1);
 			return true;
 		}
 

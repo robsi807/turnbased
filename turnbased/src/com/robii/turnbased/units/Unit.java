@@ -48,34 +48,33 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 		Queue<DistanceNode> tileQueue = new LinkedList<DistanceNode>();
 
-		tileQueue.add(new DistanceNode(0,
-				world.getMap()[getTileX()][getTileY()]));
+		tileQueue.add(new DistanceNode(0, world.getMap().getTile(getTileX(),
+				getTileY())));
 
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
 			if (currentTile.distance <= getMoveDistance()
 					&& !visited.contains(currentTile.tile)) {
 				possibleMovement.add(currentTile.tile);
-				for (Tile t : currentTile.tile.getAdjecentTiles()) {
+
+				for (Tile t : world.getMap().getAdjecentTiles(
+						currentTile.tile.getTileX(),
+						currentTile.tile.getTileY())) {
 					tileQueue
 							.add(new DistanceNode(currentTile.distance + 1, t));
 				}
 				visited.add(currentTile.tile);
 			}
 		}
-		possibleMovement.remove(world.getMap()[getTileX()][getTileY()]);
+		possibleMovement.remove(world.getMap().getTile(getTileX(), getTileY()));
 		return possibleMovement;
 	}
 
 	@Override
 	public void onUnselect() {
-		int stuffs = 0;
 		for (Tile t : moveableTiles) {
-			stuffs++;
 			t.setMovementHighlight(false);
 		}
-		System.out.println("unselected the stuffs, movement removed from "
-				+ stuffs);
 	}
 
 	@Override
