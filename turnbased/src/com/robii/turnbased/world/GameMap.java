@@ -67,6 +67,14 @@ public class GameMap {
 		}
 	}
 
+	public boolean moveUnitTo(Unit unit, int tileX, int tileY) {
+		Tile moveToTile = getTileIfValid(tileX, tileY);
+		if (moveToTile == null)
+			return false;
+		
+		return true;
+	}
+
 	public Tile getTile(int tileX, int tileY) {
 		return map[tileX][tileY];
 	}

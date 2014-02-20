@@ -62,10 +62,7 @@ public class Tile extends Actor {
 					+ getyOffset());
 			batch.setColor(color.r, color.g, color.b, 1f);
 		}
-
-	}
-
-	public void drawObjectOnTile(SpriteBatch batch) {
+		
 		if (childObject != null && childObject instanceof Visible) {
 			((Visible) childObject).drawThis(batch, yOffset);
 		} else {
@@ -81,6 +78,7 @@ public class Tile extends Actor {
 				break;
 			}
 		}
+
 	}
 
 	private void drawPlayerZone(SpriteBatch batch) {

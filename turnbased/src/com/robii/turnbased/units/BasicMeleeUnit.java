@@ -13,6 +13,7 @@ public class BasicMeleeUnit extends Unit {
 
 	@Override
 	public void drawThis(SpriteBatch batch, int yOffset) {
+		System.out.println("Drawing unit with yOffset = " + yOffset);
 		position = GameWorld.getPositionForTile(getTileX(), getTileY());
 		batch.draw(TextureHandler.unitBasicMelee, position.x
 				+ getOffsetFromTile().x, position.y + 10
