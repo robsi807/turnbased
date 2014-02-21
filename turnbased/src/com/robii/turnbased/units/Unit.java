@@ -58,7 +58,9 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
 			if (currentTile.distance <= getMoveDistance()
-					&& !visited.contains(currentTile.tile)) {
+					&& !visited.contains(currentTile.tile)
+					&& (currentTile.tile.getChildObject() == null || currentTile.tile == world
+							.getMap().getTile(getTileX(), getTileY()))) {
 				possibleMovement.add(currentTile.tile);
 
 				for (Tile t : world.getMap().getAdjecentTiles(
