@@ -1,5 +1,6 @@
 package com.robii.turnbased.world;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 import com.robii.turnbased.Constants;
@@ -32,13 +33,15 @@ public class GameMap {
 		map[2][2] = new Tile(2, 2, TileType.FOREST);
 		map[4][3] = new Tile(4, 3, TileType.GOLDMINE);
 		map[6][2] = new Tile(6, 2, TileType.MOUNTAIN);
+		map[6][3] = new Tile(6, 3, TileType.MOUNTAIN);
+		map[5][2] = new Tile(5, 2, TileType.MOUNTAIN);
 		map[10][5] = new Tile(10, 5, TileType.GOLDMINE);
 		map[5][8] = new Tile(5, 8, TileType.GOLDMINE);
 
-		addTown(4, 4, 1);
-		addTown(5, 7, 1);
+		addTown(4, 4, 0);
+		addTown(5, 7, 0);
 
-		addUnit(3, 3, 1, new BasicMeleeUnit(3, 3, world));
+		addUnit(3, 3, 0, new BasicMeleeUnit(3, 3, 0, world));
 	}
 
 	public int getMapTileHeight() {
@@ -50,18 +53,18 @@ public class GameMap {
 	}
 
 	public void addUnit(int tileX, int tileY, int player, Unit unit) {
-		world.getPlayers().get(player - 1).addObject(unit);
+		world.getPlayers().getPlayerWithId(player).addObject(unit);
 		map[tileX][tileY].setChildObject(unit);
 	}
 
 	public void addTown(int tileX, int tileY, int player) {
-
-		Town addTown = new Town(tileX, tileY);
-		world.getPlayers().get(player - 1).addObject(addTown);
+		System.out.println("adding town @ " + tileX + ", " + tileY + " with id " + player);
+		Town addTown = new Town(tileX, tileY, player, world);
+		world.getPlayers().getPlayerWithId(player).addObject(addTown);
 		map[tileX][tileY].setChildObject(addTown);
 
 		for (Tile t : getAdjecentTiles(tileX, tileY)) {
-			if (t != null && t.getPlayerZone() == 0) {
+			if (t != null && t.getPlayerZone() == -1) {
 				t.setPlayerZone(player);
 			}
 		}
@@ -71,7 +74,22 @@ public class GameMap {
 		Tile moveToTile = getTileIfValid(tileX, tileY);
 		if (moveToTile == null)
 			return false;
-		
+
+		Point startTile = null;
+		startTile = new Point(unit.getTileX(), unit.getTileY());
+
+		world.getMap().getTile(startTile.x, startTile.y).setyOffset(0);
+		// removing the child object from the current tile
+		world.getMap().getTile(startTile.x, startTile.y).setChildObject(null);
+
+		// move the object to the new tile
+		unit.setTilePosition(moveToTile.getTileX(), moveToTile.getTileY());
+		unit.setMoveDistanceLeft(unit.getMoveDistanceLeft()
+				- moveToTile.getDistanceFromSelectedUnit());
+
+		// set the child object of that tile to the moved object
+		moveToTile.setChildObject(unit);
+
 		return true;
 	}
 

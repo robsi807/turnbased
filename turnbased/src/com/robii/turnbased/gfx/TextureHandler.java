@@ -27,9 +27,10 @@ public class TextureHandler {
 
 	// units
 	public static TextureRegion unitBasicMelee;
-	public static TextureRegion unitSoldierColor;
+	public static TextureRegion unitBasicMeleeColor;
 	public static TextureRegion unitTown;
-	
+	public static TextureRegion unitTownColor;
+
 	public static void init() {
 		initTiles();
 		initObjects();
@@ -40,7 +41,9 @@ public class TextureHandler {
 	private static void initUnits() {
 		units = new Texture("images/units.png");
 		unitBasicMelee = new TextureRegion(units, 0, 0, 32, 20);
+		unitBasicMeleeColor = new TextureRegion(units, 0, 32, 32, 20);
 		unitTown = new TextureRegion(units, 32, 0, 32, 26);
+		unitTownColor = new TextureRegion(units, 32, 32, 32, 26);
 	}
 
 	private static void initGui() {

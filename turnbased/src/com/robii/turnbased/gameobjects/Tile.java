@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.gfx.TextureHandler;
+import com.robii.turnbased.world.GameWorld;
 
 public class Tile extends Actor {
 
@@ -17,7 +18,7 @@ public class Tile extends Actor {
 
 	private GameObject childObject;
 	private TileType type;
-	private boolean movementHighlight;
+	private int distanceFromSelectedUnit;
 
 	private Polygon hitbox;
 	private Color color;
@@ -46,23 +47,23 @@ public class Tile extends Actor {
 		hitbox.setOrigin(getX(), getY());
 		hitbox.setVertices(vertices);
 
-		playerZone = 0;
+		playerZone = -1; // no players zone
 	}
 
-	public void drawTile(SpriteBatch batch, float parentAlpha) {
+	public void drawTile(SpriteBatch batch, GameWorld world) {
 
 		batch.draw(TextureHandler.tileGrass, getX(), getY() + getyOffset());
 
 		color = batch.getColor();
-		drawPlayerZone(batch);
+		drawPlayerZone(batch, world);
 
-		if (movementHighlight) {
+		if (distanceFromSelectedUnit > 0) {
 			batch.setColor(1f, 0.9f, 0f, 0.5f);
 			batch.draw(TextureHandler.tileMovementHighlight, getX(), getY()
 					+ getyOffset());
 			batch.setColor(color.r, color.g, color.b, 1f);
 		}
-		
+
 		if (childObject != null && childObject instanceof Visible) {
 			((Visible) childObject).drawThis(batch, yOffset);
 		} else {
@@ -81,28 +82,16 @@ public class Tile extends Actor {
 
 	}
 
-	private void drawPlayerZone(SpriteBatch batch) {
-		switch (getPlayerZone()) {
-		case 1:
-			batch.setColor(0f, 0f, 1f, 0.3f);
-			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
-					+ getyOffset());
-			break;
-		case 2:
-			batch.setColor(color.r, color.g, color.b, 0.3f);
-			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
-					+ getyOffset());
-			break;
-		case 3:
-			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
-					+ getyOffset());
-			break;
-		case 4:
-			batch.draw(TextureHandler.tilePlayerZone, getX(), getY()
-					+ getyOffset());
-			break;
+	private void drawPlayerZone(SpriteBatch batch, GameWorld world) {
 
-		}
+		if (playerZone < 0)
+			return;
+		color = batch.getColor();
+		batch.setColor(world.getPlayers().getPlayerWithId(playerZone)
+				.getColor().r, world.getPlayers().getPlayerWithId(playerZone)
+				.getColor().g, world.getPlayers().getPlayerWithId(playerZone)
+				.getColor().b, 0.3f);
+		batch.draw(TextureHandler.tilePlayerZone, getX(), getY() + getyOffset());
 		batch.setColor(color.r, color.g, color.b, 1f);
 	}
 
@@ -158,12 +147,12 @@ public class Tile extends Actor {
 		return type;
 	}
 
-	public boolean isMovementHighlight() {
-		return movementHighlight;
+	public int getDistanceFromSelectedUnit() {
+		return distanceFromSelectedUnit;
 	}
 
-	public void setMovementHighlight(boolean movementHighlight) {
-		this.movementHighlight = movementHighlight;
+	public void setDistanceFromSelectedUnit(int distanceFromSelectedUnit) {
+		this.distanceFromSelectedUnit = distanceFromSelectedUnit;
 	}
 
 }

@@ -7,8 +7,8 @@ import com.robii.turnbased.world.GameWorld;
 
 public class BasicMeleeUnit extends Unit {
 
-	public BasicMeleeUnit(int tileX, int tileY, GameWorld world) {
-		super(tileX, tileY, world);
+	public BasicMeleeUnit(int tileX, int tileY, int ownerId, GameWorld world) {
+		super(tileX, tileY, ownerId, world);
 	}
 
 	@Override
@@ -17,6 +17,16 @@ public class BasicMeleeUnit extends Unit {
 		batch.draw(TextureHandler.unitBasicMelee, position.x
 				+ getOffsetFromTile().x, position.y + 10
 				+ getOffsetFromTile().y + yOffset);
+		
+		setStartColor(batch.getColor());
+		batch.setColor(getPlayerColorHighlight());
+		batch.draw(TextureHandler.unitBasicMeleeColor, position.x
+				+ getOffsetFromTile().x, position.y + 10
+				+ getOffsetFromTile().y + yOffset);
+		batch.setColor(getStartColor());
+		
+		
+		
 	}
 
 	@Override

@@ -41,10 +41,10 @@ public class WorldRenderer {
 	private void drawTiles(SpriteBatch batch) {
 		for (int y = world.getMap().getMapTileHeight() - 1; y >= 0; y--) {
 			for (int x = 1; x < world.getMap().getMapTileWidth(); x += 2) {
-				world.getMap().getTile(x, y).drawTile(batch, 1f);
+				world.getMap().getTile(x, y).drawTile(batch, world);
 			}
 			for (int x = 0; x < world.getMap().getMapTileWidth(); x += 2) {
-				world.getMap().getTile(x, y).drawTile(batch, 1f);
+				world.getMap().getTile(x, y).drawTile(batch, world);
 			}
 
 		}

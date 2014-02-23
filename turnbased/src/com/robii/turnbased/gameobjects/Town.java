@@ -3,12 +3,13 @@ package com.robii.turnbased.gameobjects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.robii.turnbased.gfx.TextureHandler;
+import com.robii.turnbased.units.Unit;
 import com.robii.turnbased.world.GameWorld;
 
-public class Town extends GameObject implements Visible, Clickable {
+public class Town extends Unit {
 
-	public Town(int tileX, int tileY) {
-		super(tileX, tileY);
+	public Town(int tileX, int tileY, int ownerId, GameWorld world) {
+		super(tileX, tileY, ownerId, world);
 	}
 
 	@Override
@@ -16,6 +17,12 @@ public class Town extends GameObject implements Visible, Clickable {
 		position = GameWorld.getPositionForTile(getTileX(), getTileY());
 		batch.draw(TextureHandler.unitTown, position.x + getOffsetFromTile().x,
 				position.y + getOffsetFromTile().y + yOffset);
+
+		setStartColor(batch.getColor());
+		batch.setColor(getPlayerColorHighlight());
+		batch.draw(TextureHandler.unitTownColor, position.x
+				+ getOffsetFromTile().x, position.y+ 3+ yOffset);
+		batch.setColor(getStartColor());
 	}
 
 	@Override
@@ -30,7 +37,7 @@ public class Town extends GameObject implements Visible, Clickable {
 
 	@Override
 	public void onUnselect() {
-		
+
 	}
 
 }

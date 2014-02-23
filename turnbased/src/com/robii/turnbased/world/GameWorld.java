@@ -1,44 +1,31 @@
 package com.robii.turnbased.world;
 
-import java.util.ArrayList;
-
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.Map;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
-import com.robii.turnbased.gameobjects.Player;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gfx.WorldRenderer;
-import com.robii.turnbased.units.BasicMeleeUnit;
+import com.robii.turnbased.player.PlayerHandler;
 import com.robii.turnbased.units.Unit;
 
 public class GameWorld {
 
 	private boolean debugMode = false;
 
-	private GameObject selectedObject;
+	private Unit selectedObject;
 
 	private GameMap map;
 
-	private ArrayList<Player> players;
+	private PlayerHandler players;
+
 	private WorldRenderer worldRenderer;
 
-	private int currentPlayerId = 0;
+	public GameWorld(int nrOfPlayers) {
 
-	public GameWorld(int nrOfPlayers, int currentPlayerId) {
-		this.players = new ArrayList<Player>();
-		this.currentPlayerId = currentPlayerId;
-
-		// FIX THIS, THIS IS TEMP FOR TESTING
-		players.add(new Player(Color.BLUE, 0, 0));
-		// FIX ABOVE!!
+		players = new PlayerHandler();
 
 		map = new GameMap(this);
 		selectedObject = null;
@@ -48,7 +35,7 @@ public class GameWorld {
 
 	private void playerIncome() {
 		int income = 0;
-		for (GameObject obj : getPlayers().get(currentPlayerId).getObjects()) {
+		for (GameObject obj : players.getCurrentPlayer().getObjects()) {
 			if (obj instanceof Town) {
 				for (Tile t : map.getAdjecentTiles(obj.getTileX(),
 						obj.getTileY())) {
@@ -60,9 +47,8 @@ public class GameWorld {
 	}
 
 	private void endTurn() {
-		currentPlayerId++;
-		if (currentPlayerId >= players.size())
-			currentPlayerId = 0;
+		players.nextPlayer();
+
 	}
 
 	public void draw() {
@@ -106,26 +92,27 @@ public class GameWorld {
 		this.debugMode = debugMode;
 	}
 
-	public ArrayList<Player> getPlayers() {
-		return players;
-	}
-
 	public void selectObjectAtTile(int tileX, int tileY) {
 		unselectObject();
 		map.getTile(tileX, tileY).setyOffset(3);
-		selectedObject = map.getTile(tileX, tileY).getChildObject();
+		if (map.getTile(tileX, tileY).getChildObject() instanceof Unit)
+			selectedObject = (Unit) map.getTile(tileX, tileY).getChildObject();
 		if (selectedObject instanceof Clickable) {
 			((Clickable) selectedObject).onClick();
 		}
 
 	}
 
-	public GameObject getSelectedObject() {
+	public Unit getSelectedObject() {
 		return selectedObject;
 	}
 
 	public WorldRenderer getWorldRenderer() {
 		return worldRenderer;
+	}
+
+	public PlayerHandler getPlayers() {
+		return players;
 	}
 
 }

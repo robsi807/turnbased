@@ -21,7 +21,7 @@ public class GameScreen implements Screen {
 	public GameScreen() {
 		// world loader (game loader) loads the information about the current
 		// state
-		world = new GameWorld(Constants.NR_OF_PLAYERS, 0);
+		world = new GameWorld(Constants.NR_OF_PLAYERS);
 		guiBatch = new SpriteBatch();
 		guiCam = new OrthographicCamera(Constants.WIDTH
 				* Constants.VIEWPORT_SCALE, Constants.HEIGHT

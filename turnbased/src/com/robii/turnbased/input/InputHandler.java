@@ -40,31 +40,18 @@ public class InputHandler implements GestureListener {
 
 		case MOVE_UNIT:
 			GameObject selectedObj = world.getSelectedObject();
-			Point startTile = null;
 
 			if (selectedObj != null) {
-				startTile = new Point(selectedObj.getTileX(),
-						selectedObj.getTileY());
+
 				if (world.getMap()
 						.getTile((int) clickTile.x, (int) clickTile.y) != null
 						&& world.getMap()
 								.getTile((int) clickTile.x, (int) clickTile.y)
-								.isMovementHighlight()) {
+								.getDistanceFromSelectedUnit() > 0) {
 					// reset the y offset of the tile
-					world.getMap().getTile(startTile.x, startTile.y)
-							.setyOffset(0);
-					// removing the child object from the current tile
-					world.getMap().getTile(startTile.x, startTile.y)
-							.setChildObject(null);
-
-					// move the object to the new tile
-					selectedObj.setTilePosition((int) clickTile.x,
-							(int) clickTile.y);
-
-					// set the child object of that tile to the moved object
-					world.getMap()
-							.getTile((int) clickTile.x, (int) clickTile.y)
-							.setChildObject(selectedObj);
+					if (selectedObj instanceof Unit)
+						world.getMap().moveUnitTo((Unit) selectedObj,
+								(int) clickTile.x, (int) clickTile.y);
 
 				}
 				world.unselectObject();

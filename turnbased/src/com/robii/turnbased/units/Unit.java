@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.badlogic.gdx.graphics.Color;
 import com.robii.turnbased.algorithm.DistanceNode;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
 import com.robii.turnbased.gameobjects.Movable;
 import com.robii.turnbased.gameobjects.Tile;
+import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Visible;
 import com.robii.turnbased.world.GameWorld;
 
@@ -17,21 +19,29 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	public static final int MAX_MOVE_DISTANCE = 3;
 	private GameWorld world;
-	private ArrayList<Tile> moveableTiles;
+	private ArrayList<DistanceNode> moveableTiles;
+
+	private Color playerColorHighlight;
+	private Color startColor;
+
+	private int ownerId;
 
 	private int moveDistanceLeft;
 
-	public Unit(int tileX, int tileY, GameWorld world) {
+	public Unit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY);
 		this.world = world;
+		this.ownerId = ownerId;
 		moveDistanceLeft = MAX_MOVE_DISTANCE;
+		playerColorHighlight = getWorld().getPlayers()
+				.getPlayerWithId(ownerId).getColor();
 	}
 
 	@Override
 	public void onClick() {
 		moveableTiles = getPossibleMovement();
-		for (Tile t : moveableTiles) {
-			t.setMovementHighlight(true);
+		for (DistanceNode d : moveableTiles) {
+			d.tile.setDistanceFromSelectedUnit(d.distance);
 		}
 	}
 
@@ -40,9 +50,9 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	 * 
 	 * @return Null if no valid movement is found
 	 */
-	private ArrayList<Tile> getPossibleMovement() {
+	private ArrayList<DistanceNode> getPossibleMovement() {
 
-		ArrayList<Tile> possibleMovement = new ArrayList<Tile>();
+		ArrayList<DistanceNode> possibleMovement = new ArrayList<DistanceNode>();
 		ArrayList<Tile> visited = new ArrayList<Tile>();
 		DistanceNode currentTile;
 
@@ -50,18 +60,12 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 		tileQueue.add(new DistanceNode(0, world.getMap().getTile(getTileX(),
 				getTileY())));
-		if (tileQueue.peek() == null)
-			System.out.println("peek == null");
-		System.out.println("getting possible movement from " + getTileX()
-				+ ", " + getTileY());
-
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
 			if (currentTile.distance <= getMoveDistance()
 					&& !visited.contains(currentTile.tile)
-					&& (currentTile.tile.getChildObject() == null || currentTile.tile == world
-							.getMap().getTile(getTileX(), getTileY()))) {
-				possibleMovement.add(currentTile.tile);
+					&& canMoveToTile(currentTile.tile)) {
+				possibleMovement.add(currentTile);
 
 				for (Tile t : world.getMap().getAdjecentTiles(
 						currentTile.tile.getTileX(),
@@ -76,10 +80,16 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		return possibleMovement;
 	}
 
+	private boolean canMoveToTile(Tile tile) {
+		return (tile.getChildObject() == null || tile == world.getMap()
+				.getTile(getTileX(), getTileY()))
+				&& tile.getType() != TileType.MOUNTAIN;
+	}
+
 	@Override
 	public void onUnselect() {
-		for (Tile t : moveableTiles) {
-			t.setMovementHighlight(false);
+		for (DistanceNode d : moveableTiles) {
+			d.tile.setDistanceFromSelectedUnit(0);
 		}
 	}
 
@@ -96,8 +106,40 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		return moveDistanceLeft;
 	}
 
-	public ArrayList<Tile> getMoveableTiles() {
+	public int getMoveDistanceLeft() {
+		return moveDistanceLeft;
+	}
+
+	public void setMoveDistanceLeft(int moveDistanceLeft) {
+		this.moveDistanceLeft = moveDistanceLeft;
+	}
+
+	public ArrayList<DistanceNode> getMoveableTiles() {
 		return moveableTiles;
+	}
+
+	public void setMoveableTiles(ArrayList<DistanceNode> moveableTiles) {
+		this.moveableTiles = moveableTiles;
+	}
+
+	public Color getPlayerColorHighlight() {
+		return playerColorHighlight;
+	}
+
+	public GameWorld getWorld() {
+		return world;
+	}
+
+	public int getOwnerId() {
+		return ownerId;
+	}
+
+	public Color getStartColor() {
+		return startColor;
+	}
+
+	public void setStartColor(Color startColor) {
+		this.startColor = startColor;
 	}
 
 }
