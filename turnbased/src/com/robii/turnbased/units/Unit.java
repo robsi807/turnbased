@@ -17,7 +17,6 @@ import com.robii.turnbased.world.GameWorld;
 public abstract class Unit extends GameObject implements Visible, Clickable,
 		Movable {
 
-	public static final int MAX_MOVE_DISTANCE = 3;
 	private GameWorld world;
 	private ArrayList<DistanceNode> moveableTiles;
 
@@ -27,12 +26,13 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private int ownerId;
 
 	private int moveDistanceLeft;
+	private int maxMoveDistanceLeft = 3;
 
 	public Unit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY);
 		this.world = world;
 		this.ownerId = ownerId;
-		moveDistanceLeft = MAX_MOVE_DISTANCE;
+		moveDistanceLeft = maxMoveDistanceLeft;
 		playerColorHighlight = getWorld().getPlayers()
 				.getPlayerWithId(ownerId).getColor();
 	}
@@ -62,7 +62,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 				getTileY())));
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
-			if (currentTile.distance <= getMoveDistance()
+			if (currentTile.distance <= getMoveDistanceLeft()
 					&& !visited.contains(currentTile.tile)
 					&& canMoveToTile(currentTile.tile)) {
 				possibleMovement.add(currentTile);
@@ -99,11 +99,11 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	}
 
 	public void resetMoveDistance() {
-		moveDistanceLeft = MAX_MOVE_DISTANCE;
+		moveDistanceLeft = getMoveMaxDistance();
 	}
 
-	public int getMoveDistance() {
-		return moveDistanceLeft;
+	public int getMoveMaxDistance() {
+		return maxMoveDistanceLeft;
 	}
 
 	public int getMoveDistanceLeft() {

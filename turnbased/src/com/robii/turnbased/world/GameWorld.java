@@ -2,6 +2,7 @@ package com.robii.turnbased.world;
 
 import com.badlogic.gdx.math.Vector2;
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.GameScreen;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
 import com.robii.turnbased.gameobjects.Tile;
@@ -23,32 +24,19 @@ public class GameWorld {
 
 	private WorldRenderer worldRenderer;
 
-	public GameWorld(int nrOfPlayers) {
+	private GameScreen gameScreen;
 
-		players = new PlayerHandler();
+	public GameWorld(int nrOfPlayers, GameScreen gameScreen) {
+		this.gameScreen = gameScreen;
+		players = new PlayerHandler(this);
 
 		map = new GameMap(this);
 		selectedObject = null;
 		worldRenderer = new WorldRenderer(this);
-		playerIncome();
 	}
 
-	private void playerIncome() {
-		int income = 0;
-		for (GameObject obj : players.getCurrentPlayer().getObjects()) {
-			if (obj instanceof Town) {
-				for (Tile t : map.getAdjecentTiles(obj.getTileX(),
-						obj.getTileY())) {
-					if (t.getType() == TileType.GOLDMINE)
-						income += 5;
-				}
-			}
-		}
-	}
-
-	private void endTurn() {
+	public void endTurn() {
 		players.nextPlayer();
-
 	}
 
 	public void draw() {
@@ -113,6 +101,10 @@ public class GameWorld {
 
 	public PlayerHandler getPlayers() {
 		return players;
+	}
+
+	public GameScreen getGameScreen() {
+		return gameScreen;
 	}
 
 }

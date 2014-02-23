@@ -24,6 +24,7 @@ public class TextureHandler {
 
 	// gui
 	public static TextureRegion guiCoin;
+	public static TextureRegion guiBtnEndTurn;
 
 	// units
 	public static TextureRegion unitBasicMelee;
@@ -49,6 +50,7 @@ public class TextureHandler {
 	private static void initGui() {
 		gui = new Texture("images/gui.png");
 		guiCoin = new TextureRegion(new TextureRegion(gui, 0, 0, 12, 16));
+		guiBtnEndTurn = new TextureRegion(new TextureRegion(gui, 16, 0, 64, 16));
 	}
 
 	private static void initTiles() {

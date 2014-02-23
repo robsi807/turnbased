@@ -16,6 +16,7 @@ public class WorldRenderer {
 	private Color color;
 
 	private OrthographicCamera camera;
+	private OrthographicCamera guiCamera;
 
 	public WorldRenderer(GameWorld world) {
 		this.world = world;
@@ -24,6 +25,12 @@ public class WorldRenderer {
 				* Constants.VIEWPORT_SCALE);
 		camera.position.set(camera.viewportWidth / 2,
 				camera.viewportHeight / 2, 0f);
+		this.guiCamera = new OrthographicCamera(Constants.WIDTH
+				* Constants.VIEWPORT_SCALE, Constants.HEIGHT
+				* Constants.VIEWPORT_SCALE);
+		guiCamera.position.set(camera.viewportWidth / 2,
+				camera.viewportHeight / 2, 0f);
+		guiCamera.update();
 		batch = new SpriteBatch();
 	}
 
@@ -33,7 +40,7 @@ public class WorldRenderer {
 		batch.begin();
 
 		drawTiles(batch);
-		//drawObjects(batch);
+		// drawObjects(batch);
 
 		batch.end();
 	}
@@ -54,4 +61,9 @@ public class WorldRenderer {
 	public OrthographicCamera getCamera() {
 		return camera;
 	}
+
+	public OrthographicCamera getGuiCamera() {
+		return guiCamera;
+	}
+
 }

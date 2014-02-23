@@ -3,18 +3,18 @@ package com.robii.turnbased.player;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.Color;
-import com.robii.turnbased.gameobjects.GameObject;
+import com.robii.turnbased.units.Unit;
 
 public class Player {
 	private Color color;
 	private int gold, id;
-	private ArrayList<GameObject> objects;
+	private ArrayList<Unit> units;
 
 	public Player(Color color, int id, int gold) {
 		this.color = color;
 		this.gold = gold;
 		this.id = id;
-		objects = new ArrayList<GameObject>();
+		units = new ArrayList<Unit>();
 	}
 
 	public int getGold() {
@@ -33,12 +33,16 @@ public class Player {
 		return id;
 	}
 
-	public void addObject(GameObject obj){
-		objects.add(obj);
+	public void addUnit(Unit unit){
+		units.add(unit);
+	}
+
+	public ArrayList<Unit> getUnits() {
+		return units;
 	}
 	
-	public ArrayList<GameObject> getObjects() {
-		return objects;
+	public void addGold(int amount){
+		gold += amount;
 	}
 	
 

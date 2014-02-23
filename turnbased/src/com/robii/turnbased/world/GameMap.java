@@ -53,14 +53,13 @@ public class GameMap {
 	}
 
 	public void addUnit(int tileX, int tileY, int player, Unit unit) {
-		world.getPlayers().getPlayerWithId(player).addObject(unit);
+		world.getPlayers().getPlayerWithId(player).addUnit(unit);
 		map[tileX][tileY].setChildObject(unit);
 	}
 
 	public void addTown(int tileX, int tileY, int player) {
-		System.out.println("adding town @ " + tileX + ", " + tileY + " with id " + player);
 		Town addTown = new Town(tileX, tileY, player, world);
-		world.getPlayers().getPlayerWithId(player).addObject(addTown);
+		world.getPlayers().getPlayerWithId(player).addUnit(addTown);
 		map[tileX][tileY].setChildObject(addTown);
 
 		for (Tile t : getAdjecentTiles(tileX, tileY)) {

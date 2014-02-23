@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.gfx.TextureHandler;
+import com.robii.turnbased.units.Unit;
 import com.robii.turnbased.world.GameWorld;
 
 public class Tile extends Actor {
@@ -16,7 +17,7 @@ public class Tile extends Actor {
 	private int tileX, tileY;
 	private int yOffset = 0;
 
-	private GameObject childObject;
+	private Unit childObject;
 	private TileType type;
 	private int distanceFromSelectedUnit;
 
@@ -64,21 +65,20 @@ public class Tile extends Actor {
 			batch.setColor(color.r, color.g, color.b, 1f);
 		}
 
-		if (childObject != null && childObject instanceof Visible) {
-			((Visible) childObject).drawThis(batch, yOffset);
-		} else {
-			switch (type) {
-			case FOREST:
-				batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
-				break;
-			case GOLDMINE:
-				batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
-				break;
-			case MOUNTAIN:
-				batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
-				break;
-			}
+		switch (type) {
+		case FOREST:
+			batch.draw(TextureHandler.objForest, getX() + 2, getY() + 3);
+			break;
+		case GOLDMINE:
+			batch.draw(TextureHandler.objGoldmine, getX(), getY() + 2);
+			break;
+		case MOUNTAIN:
+			batch.draw(TextureHandler.objMountain, getX(), getY() + 3);
+			break;
 		}
+
+		if (childObject != null && childObject instanceof Visible)
+			((Visible) childObject).drawThis(batch, yOffset);
 
 	}
 
@@ -114,11 +114,11 @@ public class Tile extends Actor {
 		return hitbox;
 	}
 
-	public GameObject getChildObject() {
+	public Unit getChildObject() {
 		return childObject;
 	}
 
-	public void setChildObject(GameObject childObject) {
+	public void setChildObject(Unit childObject) {
 		this.childObject = childObject;
 	}
 

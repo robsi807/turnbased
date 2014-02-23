@@ -1,7 +1,5 @@
 package com.robii.turnbased.input;
 
-import java.awt.Point;
-
 import com.badlogic.gdx.input.GestureDetector.GestureListener;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.Ray;
@@ -15,9 +13,11 @@ public class InputHandler implements GestureListener {
 	private float realCameraX, realCameraY;
 	private boolean camaraInitialized = false;
 	private GameWorld world;
-	private Ray ray;
+	private Ray gameRay;
+	private Ray guiRay;
 	private Vector2 clickTile;
 	private InputState inputState;
+	private GuiButton clickedButton;
 
 	public InputHandler(GameWorld world) {
 		this.world = world;
@@ -32,8 +32,18 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
-		ray = world.getWorldRenderer().getCamera().getPickRay(x, y);
-		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
+
+		// checking if the gui is clicked
+		guiRay = world.getWorldRenderer().getGuiCamera().getPickRay(x, y);
+		clickedButton = getGuiButtonClick(guiRay.origin.x, guiRay.origin.y);
+		if (clickedButton != null) {
+			clickedButton.onClick();
+			return true;
+		}
+
+		// checking if a tile is clicked
+		gameRay = world.getWorldRenderer().getCamera().getPickRay(x, y);
+		clickTile = getTilePosFromCoords(gameRay.origin.x, gameRay.origin.y);
 		if (clickTile == null)
 			return false;
 		switch (inputState) {
@@ -62,15 +72,20 @@ public class InputHandler implements GestureListener {
 
 		case SELECT_UNIT:
 
+			// child != null and the player clicking owns the unit
 			if (world.getMap().getTile((int) clickTile.x, (int) clickTile.y)
-					.getChildObject() != null) {
+					.getChildObject() != null
+					&& world.getMap()
+							.getTile((int) clickTile.x, (int) clickTile.y)
+							.getChildObject().getOwnerId() == world
+							.getPlayers().getCurrentPlayer().getId()) {
 
 				world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
 
 				if (Unit.class.isAssignableFrom(world.getSelectedObject()
 						.getClass())) {
 					inputState = InputState.MOVE_UNIT;
-				} // else if och s� building som inte finns �n
+				}
 
 				return true;
 
@@ -82,11 +97,19 @@ public class InputHandler implements GestureListener {
 		return false;
 	}
 
+	private GuiButton getGuiButtonClick(float x, float y) {
+		for (GuiButton btn : world.getGameScreen().getButtons()) {
+			if (btn.getHitbox().contains(new Vector2(x, y)))
+				return btn;
+		}
+		return null;
+	}
+
 	private Vector2 getTilePosFromCoords(float x, float y) {
 		for (int j = 0; j < world.getMap().getMapTileHeight(); j++) {
 			for (int i = 0; i < world.getMap().getMapTileWidth(); i++) {
 				if (world.getMap().getTile(i, j).getHitbox()
-						.contains(ray.origin.x, ray.origin.y)) {
+						.contains(gameRay.origin.x, gameRay.origin.y)) {
 					return new Vector2(i, j);
 				}
 			}
@@ -96,11 +119,12 @@ public class InputHandler implements GestureListener {
 
 	@Override
 	public boolean longPress(float x, float y) {
-		ray = world.getWorldRenderer().getCamera().getPickRay(x, y);
-		clickTile = getTilePosFromCoords(ray.origin.x, ray.origin.y);
+		gameRay = world.getWorldRenderer().getCamera().getPickRay(x, y);
+		clickTile = getTilePosFromCoords(gameRay.origin.x, gameRay.origin.y);
 
 		if (clickTile != null) {
-			world.getMap().addTown((int) clickTile.x, (int) clickTile.y, 1);
+			world.getMap().addTown((int) clickTile.x, (int) clickTile.y,
+					world.getPlayers().getCurrentPlayer().getId());
 			return true;
 		}
 
