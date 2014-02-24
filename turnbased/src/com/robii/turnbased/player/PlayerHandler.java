@@ -51,8 +51,12 @@ public class PlayerHandler {
 			}
 
 			// adding income for a player
-			getCurrentPlayer().addGold(income);
+
 		}
+		getCurrentPlayer().addGold(income); // should not be able to build alot
+											// of towns around a mine
+		System.out.println("Income for player " + currentPlayerId + " = "
+				+ income);
 	}
 
 	public Player getPlayerWithId(int id) {
