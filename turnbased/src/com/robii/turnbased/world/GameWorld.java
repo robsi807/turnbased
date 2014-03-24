@@ -1,5 +1,6 @@
 package com.robii.turnbased.world;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.math.Vector2;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.GameScreen;
@@ -105,6 +106,10 @@ public class GameWorld {
 
 	public GameScreen getGameScreen() {
 		return gameScreen;
+	}
+	
+	public Camera getGuiCamera(){
+		return gameScreen.getGuiCamera();
 	}
 
 }

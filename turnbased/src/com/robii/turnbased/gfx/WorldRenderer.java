@@ -10,13 +10,11 @@ import com.robii.turnbased.world.GameWorld;
 public class WorldRenderer {
 
 	private GameWorld world;
-	private ShapeRenderer debugRenderer;
 	private SpriteBatch batch;
 	// for rendering of the player zones
 	private Color color;
 
 	private OrthographicCamera camera;
-	private OrthographicCamera guiCamera;
 
 	public WorldRenderer(GameWorld world) {
 		this.world = world;
@@ -25,12 +23,6 @@ public class WorldRenderer {
 				* Constants.VIEWPORT_SCALE);
 		camera.position.set(camera.viewportWidth / 2,
 				camera.viewportHeight / 2, 0f);
-		this.guiCamera = new OrthographicCamera(Constants.WIDTH
-				* Constants.VIEWPORT_SCALE, Constants.HEIGHT
-				* Constants.VIEWPORT_SCALE);
-		guiCamera.position.set(camera.viewportWidth / 2,
-				camera.viewportHeight / 2, 0f);
-		guiCamera.update();
 		batch = new SpriteBatch();
 	}
 
@@ -62,8 +54,8 @@ public class WorldRenderer {
 		return camera;
 	}
 
-	public OrthographicCamera getGuiCamera() {
-		return guiCamera;
+	public SpriteBatch getBatch() {
+		return batch;
 	}
 
 }

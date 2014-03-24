@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robii.turnbased.algorithm.DistanceNode;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
@@ -12,6 +14,7 @@ import com.robii.turnbased.gameobjects.Movable;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Visible;
+import com.robii.turnbased.input.FontHandler;
 import com.robii.turnbased.world.GameWorld;
 
 public abstract class Unit extends GameObject implements Visible, Clickable,
@@ -23,18 +26,23 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private Color playerColorHighlight;
 	private Color startColor;
 
+	// for drawing the stats on the screen
+	private BitmapFont font;
+
 	private int ownerId;
 
 	private int moveDistanceLeft;
 	private int maxMoveDistanceLeft = 3;
+	private int damage;
+	private int hp;
 
 	public Unit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY);
 		this.world = world;
 		this.ownerId = ownerId;
 		moveDistanceLeft = maxMoveDistanceLeft;
-		playerColorHighlight = getWorld().getPlayers()
-				.getPlayerWithId(ownerId).getColor();
+		playerColorHighlight = getWorld().getPlayers().getPlayerWithId(ownerId)
+				.getColor();
 	}
 
 	@Override
@@ -140,6 +148,32 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	public void setStartColor(Color startColor) {
 		this.startColor = startColor;
+	}
+
+	public void drawStats(SpriteBatch batch) {
+		batch.begin();
+		font = FontHandler.font[1];
+		font.setColor(Color.RED);
+		font.draw(batch, Integer.toString(hp), position.x, position.y);
+		// font.setColor(Color.WHITE);
+		// font.draw(batch, Integer.toString(hp), getTileX(), getTileY());
+		batch.end();
+	}
+
+	public void setHp(int hp) {
+		this.hp = hp;
+	}
+
+	public int getHp() {
+		return hp;
+	}
+
+	public int getDamage() {
+		return damage;
+	}
+
+	public void setDamage(int damage) {
+		this.damage = damage;
 	}
 
 }

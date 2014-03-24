@@ -15,4 +15,5 @@ public class Constants {
 	public static final int MAP_TILE_WIDTH = 12;
 	public static final int MAP_TILE_HEIGHT = 12;
 	public static final int GOLD_MINE_INCOME_RATE = 5;
+	public static final int GUI_FONT_SIZE = 5;
 }

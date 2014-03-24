@@ -7,8 +7,11 @@ import com.robii.turnbased.world.GameWorld;
 
 public class BasicMeleeUnit extends Unit {
 
+	private int MAX_HP = 2;
+	
 	public BasicMeleeUnit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY, ownerId, world);
+		setHp(MAX_HP);
 	}
 
 	@Override
@@ -24,8 +27,6 @@ public class BasicMeleeUnit extends Unit {
 				+ getOffsetFromTile().x, position.y + 10
 				+ getOffsetFromTile().y + yOffset);
 		batch.setColor(getStartColor());
-		
-		
 		
 	}
 

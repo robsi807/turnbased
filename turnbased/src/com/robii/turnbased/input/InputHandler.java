@@ -34,7 +34,7 @@ public class InputHandler implements GestureListener {
 	public boolean tap(float x, float y, int count, int button) {
 
 		// checking if the gui is clicked
-		guiRay = world.getWorldRenderer().getGuiCamera().getPickRay(x, y);
+		guiRay = world.getGuiCamera().getPickRay(x, y);
 		clickedButton = getGuiButtonClick(guiRay.origin.x, guiRay.origin.y);
 		if (clickedButton != null) {
 			clickedButton.onClick();

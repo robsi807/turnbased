@@ -13,7 +13,7 @@ public class FontHandler {
 				Gdx.files.internal("fonts/pixel.ttf"));
 		font = new BitmapFont[20];
 		for (int x = 0; x < 20; x++)
-			font[x] = generator.generateFont((x + 1) * 10);
+			font[x] = generator.generateFont((x + 1) * 8);
 		generator.dispose();
 	}
 
