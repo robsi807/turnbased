@@ -38,10 +38,14 @@ public class GameMap {
 		map[10][5] = new Tile(10, 5, TileType.GOLDMINE);
 		map[5][8] = new Tile(5, 8, TileType.GOLDMINE);
 
+		// player 1
 		addTown(4, 4, 0);
 		addTown(5, 7, 0);
+		addBasicUnit(3, 3, 0);
 
-		addUnit(3, 3, 0, new BasicMeleeUnit(3, 3, 0, world));
+		// player 1
+		addTown(9, 5, 1);
+		addBasicUnit(8, 5, 1);
 	}
 
 	public int getMapTileHeight() {
@@ -52,7 +56,8 @@ public class GameMap {
 		return map.length;
 	}
 
-	public void addUnit(int tileX, int tileY, int player, Unit unit) {
+	public void addBasicUnit(int tileX, int tileY, int player) {
+		Unit unit = new BasicMeleeUnit(tileX, tileY, player, world);
 		world.getPlayers().getPlayerWithId(player).addUnit(unit);
 		map[tileX][tileY].setChildObject(unit);
 	}

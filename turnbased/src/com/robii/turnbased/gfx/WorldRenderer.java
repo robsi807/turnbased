@@ -3,7 +3,6 @@ package com.robii.turnbased.gfx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.robii.turnbased.Constants;
 import com.robii.turnbased.world.GameWorld;
 
@@ -32,7 +31,6 @@ public class WorldRenderer {
 		batch.begin();
 
 		drawTiles(batch);
-		// drawObjects(batch);
 
 		batch.end();
 	}

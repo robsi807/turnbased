@@ -7,6 +7,7 @@ import java.util.Queue;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.robii.turnbased.Constants;
 import com.robii.turnbased.algorithm.DistanceNode;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
@@ -154,9 +155,10 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		batch.begin();
 		font = FontHandler.font[1];
 		font.setColor(Color.RED);
-		font.draw(batch, Integer.toString(hp), position.x, position.y);
-		// font.setColor(Color.WHITE);
-		// font.draw(batch, Integer.toString(hp), getTileX(), getTileY());
+		font.draw(batch, Integer.toString(hp), position.x + 3, position.y + 15);
+		font.setColor(Color.WHITE);
+		font.draw(batch, Integer.toString(damage), position.x
+				+ Constants.TILE_WIDTH - 13, position.y + 15);
 		batch.end();
 	}
 

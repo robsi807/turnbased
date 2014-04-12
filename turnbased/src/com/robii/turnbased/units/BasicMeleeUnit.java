@@ -8,10 +8,12 @@ import com.robii.turnbased.world.GameWorld;
 public class BasicMeleeUnit extends Unit {
 
 	private int MAX_HP = 2;
+	private int DAMAGE = 1;
 	
 	public BasicMeleeUnit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY, ownerId, world);
 		setHp(MAX_HP);
+		setDamage(DAMAGE);
 	}
 
 	@Override
