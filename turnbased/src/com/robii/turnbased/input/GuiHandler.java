@@ -65,7 +65,7 @@ public class GuiHandler {
 				guiCam.viewportHeight / 2, 0f);
 		guiCam.update();
 		guiBatch.setProjectionMatrix(guiCam.combined);
-
+		guiFont = FontHandler.font[Constants.GUI_FONT_SIZE];
 		debugRenderer.setProjectionMatrix(guiCam.combined);
 	}
 
@@ -92,7 +92,7 @@ public class GuiHandler {
 				TextureHandler.guiCoin.getRegionHeight() * 2);
 
 		// drawing the gold text
-		guiFont = FontHandler.font[Constants.GUI_FONT_SIZE];
+		
 		guiFont.setColor(Color.YELLOW);
 		guiFont.draw(guiBatch, "x"
 				+ world.getPlayers().getCurrentPlayer().getGold(),
@@ -145,6 +145,10 @@ public class GuiHandler {
 
 	public void removeSelectedUnitButtons() {
 		removeSelectedUnitGui = true;
+	}
+
+	public BitmapFont getGuiFont() {
+		return guiFont;
 	}
 
 }

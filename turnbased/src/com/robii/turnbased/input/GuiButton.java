@@ -25,6 +25,7 @@ public abstract class GuiButton {
 		textBounds = FontHandler.font[Constants.GUI_FONT_SIZE].getBounds(text);
 		hitbox = new Rectangle(x, y, textBounds.width + 10,
 				textBounds.height + 5);
+		
 	}
 
 	public String getText() {
@@ -46,7 +47,6 @@ public abstract class GuiButton {
 	public abstract void onClick();
 
 	public void draw(SpriteBatch guiBatch, ShapeRenderer debugRenderer) {
-		// guiBatch.draw(TextureHandler.guiBtnEndTurn, hitbox.x, hitbox.y);
 		guiBatch.end();
 		if (debugRenderer == null)
 			debugRenderer = new ShapeRenderer();
@@ -56,9 +56,7 @@ public abstract class GuiButton {
 		debugRenderer.rect(hitbox.x, hitbox.y, hitbox.width, hitbox.height);
 		debugRenderer.end();
 		guiBatch.begin();
-
-		font = new BitmapFont();
-		font = FontHandler.font[Constants.GUI_FONT_SIZE];
+		font = world.getGameScreen().getGuiHandler().getGuiFont();
 		font.setColor(Color.WHITE);
 		font.draw(
 				guiBatch,
