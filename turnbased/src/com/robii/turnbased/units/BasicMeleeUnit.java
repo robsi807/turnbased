@@ -51,10 +51,11 @@ public class BasicMeleeUnit extends Unit {
 
 	@Override
 	public void handleGuiClick(String action) {
-		if(action.equals("Attack")){
+		System.out.println("handleGuiClick: " + action);
+		if (action.equals("Attack")) {
 			System.out.println("@basicmelee: attack should happen");
 		}
-			
+
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -16,6 +17,8 @@ import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Visible;
 import com.robii.turnbased.input.FontHandler;
+import com.robii.turnbased.input.GuiButton;
+import com.robii.turnbased.input.SelectedUnitGuiButton;
 import com.robii.turnbased.world.GameWorld;
 
 public abstract class Unit extends GameObject implements Visible, Clickable,
@@ -51,8 +54,29 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		for (DistanceNode d : moveableTiles) {
 			d.tile.setDistanceFromSelectedUnit(d.distance);
 		}
-		world.getGameScreen().getGuiHandler().addSelectedUnitButtons(getGuiItems());
+		world.getGameScreen().getGuiHandler()
+				.addSelectedUnitButtons(generateGuiButtons(getGuiItems()));
 	}
+
+	private ArrayList<SelectedUnitGuiButton> generateGuiButtons(
+			ArrayList<String> guiItems) {
+		ArrayList<SelectedUnitGuiButton> buttons = new ArrayList<SelectedUnitGuiButton>();
+		SelectedUnitGuiButton addbutton;
+		for (int i = 0; i < guiItems.size(); i++) {
+			addbutton = new SelectedUnitGuiButton(0, i * 40, guiItems.get(i),
+					world, guiItems.get(i));
+			addbutton.getHitbox().x = world.getGameScreen().getGuiHandler().getGuiCam().viewportWidth
+					- addbutton.getHitbox().getWidth();
+			buttons.add(addbutton);
+
+		}
+		
+		System.out.println("adding " + buttons.size() + " buttons to gui");
+
+		return buttons;
+	}
+
+	public abstract ArrayList<String> getGuiItems();
 
 	public void startAttack() {
 
@@ -105,9 +129,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 			d.tile.setDistanceFromSelectedUnit(0);
 		}
 	}
-	
-	public abstract ArrayList<String> getGuiItems();
-	
+
 	public abstract void handleGuiClick(String action);
 
 	@Override

@@ -17,8 +17,8 @@ public class GuiHandler {
 	private GameWorld world;
 	private BitmapFont guiFont;
 	private ArrayList<GuiButton> buttons;
-	private ArrayList<GuiButton> selectedUnitButtons;
-	private ArrayList<GuiButton> addButtons;
+	private ArrayList<SelectedUnitGuiButton> selectedUnitButtons;
+	private ArrayList<SelectedUnitGuiButton> addButtons;
 
 	private boolean removeSelectedUnitGui = false;
 
@@ -72,7 +72,7 @@ public class GuiHandler {
 	public void drawGUI() {
 		if (addButtons != null) {
 			if (selectedUnitButtons == null)
-				selectedUnitButtons = new ArrayList<GuiButton>();
+				selectedUnitButtons = new ArrayList<SelectedUnitGuiButton>();
 			selectedUnitButtons.addAll(addButtons);
 			addButtons = null;
 		}
@@ -129,18 +129,8 @@ public class GuiHandler {
 		return guiCam;
 	}
 
-	public void addSelectedUnitButtons(final ArrayList<String> guiItems) {
-		addButtons = new ArrayList<GuiButton>();
-
-		for (int i = 0; i < guiItems.size(); i++) {
-			System.out.println("adding selected unit gui item " + i);
-			addButtons.add(new GuiButton(150, i * 40, guiItems.get(i), world) {
-				@Override
-				public void onClick() {
-					// world.getSelectedObject().handleGuiClick(guiItems.get(i));
-				}
-			});
-		}
+	public void addSelectedUnitButtons(ArrayList<SelectedUnitGuiButton> guiButtons) {
+		addButtons = guiButtons;
 	}
 
 	public void removeSelectedUnitButtons() {

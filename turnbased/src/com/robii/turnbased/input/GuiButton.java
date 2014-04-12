@@ -43,7 +43,7 @@ public abstract class GuiButton {
 	public GameWorld getWorld() {
 		return world;
 	}
-
+	
 	public abstract void onClick();
 
 	public void draw(SpriteBatch guiBatch, ShapeRenderer debugRenderer) {
