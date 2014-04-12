@@ -10,6 +10,7 @@ import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gfx.WorldRenderer;
+import com.robii.turnbased.input.InputHandler.InputState;
 import com.robii.turnbased.player.PlayerHandler;
 import com.robii.turnbased.units.Unit;
 
@@ -38,6 +39,7 @@ public class GameWorld {
 
 	public void endTurn() {
 		players.nextPlayer();
+		unselectObject();
 	}
 
 	public void draw() {
@@ -70,6 +72,7 @@ public class GameWorld {
 				((Clickable) selectedObject).onUnselect();
 			}
 			selectedObject = null;
+			gameScreen.getInputHandler().setInputState(InputState.SELECT_UNIT);
 		}
 	}
 
@@ -88,6 +91,10 @@ public class GameWorld {
 			selectedObject = (Unit) map.getTile(tileX, tileY).getChildObject();
 		if (selectedObject instanceof Clickable) {
 			((Clickable) selectedObject).onClick();
+		}
+		if (Unit.class.isAssignableFrom(getSelectedObject()
+				.getClass())) {
+			gameScreen.getInputHandler().setInputState(InputState.MOVE_UNIT);
 		}
 
 	}

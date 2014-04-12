@@ -33,6 +33,8 @@ public class InputHandler implements GestureListener {
 	@Override
 	public boolean tap(float x, float y, int count, int button) {
 
+		
+		System.out.println("Current input is = " + inputState);
 		// checking if the gui is clicked
 		guiRay = world.getGuiCamera().getPickRay(x, y);
 		clickedButton = getGuiButtonClick(guiRay.origin.x, guiRay.origin.y);
@@ -65,7 +67,6 @@ public class InputHandler implements GestureListener {
 
 				}
 				world.unselectObject();
-				inputState = InputState.SELECT_UNIT;
 				return true;
 			}
 			break;
@@ -81,11 +82,6 @@ public class InputHandler implements GestureListener {
 							.getPlayers().getCurrentPlayer().getId()) {
 
 				world.selectObjectAtTile((int) clickTile.x, (int) clickTile.y);
-
-				if (Unit.class.isAssignableFrom(world.getSelectedObject()
-						.getClass())) {
-					inputState = InputState.MOVE_UNIT;
-				}
 
 				return true;
 
@@ -174,6 +170,10 @@ public class InputHandler implements GestureListener {
 
 	public enum InputState {
 		SELECT_UNIT, MOVE_UNIT, MENU;
+	}
+	
+	public void setInputState(InputState state){
+		inputState = state;
 	}
 
 }

@@ -26,6 +26,8 @@ public class GameScreen implements Screen {
 	private SpriteBatch guiBatch;
 	private ShapeRenderer debugRenderer;
 	private OrthographicCamera guiCam;
+	
+	private InputHandler inputHandler;
 
 	private BitmapFont guiFont;
 
@@ -35,7 +37,7 @@ public class GameScreen implements Screen {
 		// world loader (game loader) loads the information about the current
 		// state
 		world = new GameWorld(Constants.NR_OF_PLAYERS, this);
-
+		inputHandler = new InputHandler(world);
 		creatingHud();
 
 	}
@@ -117,7 +119,7 @@ public class GameScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input
-				.setInputProcessor(new GestureDetector(new InputHandler(world)));
+				.setInputProcessor(new GestureDetector(inputHandler));
 	}
 
 	@Override
@@ -147,4 +149,9 @@ public class GameScreen implements Screen {
 	public Camera getGuiCamera() {
 		return guiCam;
 	}
+
+	public InputHandler getInputHandler() {
+		return inputHandler;
+	}
+	
 }
