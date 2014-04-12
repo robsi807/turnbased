@@ -1,5 +1,7 @@
 package com.robii.turnbased.gameobjects;
 
+import java.util.ArrayList;
+
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.robii.turnbased.gfx.TextureHandler;
@@ -21,7 +23,7 @@ public class Town extends Unit {
 		setStartColor(batch.getColor());
 		batch.setColor(getPlayerColorHighlight());
 		batch.draw(TextureHandler.unitTownColor, position.x
-				+ getOffsetFromTile().x, position.y+ 3+ yOffset);
+				+ getOffsetFromTile().x, position.y + 3 + yOffset);
 		batch.setColor(getStartColor());
 	}
 
@@ -40,4 +42,15 @@ public class Town extends Unit {
 
 	}
 
+	@Override
+	public ArrayList<String> getGuiItems() {
+		ArrayList<String> guiItems = new ArrayList<String>();
+		guiItems.add("Build Soldier");
+		return guiItems;
+	}
+
+	@Override
+	public void handleGuiClick(String action) {
+		// TODO
+	}
 }

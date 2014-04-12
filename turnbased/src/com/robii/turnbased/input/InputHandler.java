@@ -94,7 +94,7 @@ public class InputHandler implements GestureListener {
 	}
 
 	private GuiButton getGuiButtonClick(float x, float y) {
-		for (GuiButton btn : world.getGameScreen().getButtons()) {
+		for (GuiButton btn : world.getGameScreen().getGuiHandler().getButtons()) {
 			if (btn.getHitbox().contains(new Vector2(x, y)))
 				return btn;
 		}

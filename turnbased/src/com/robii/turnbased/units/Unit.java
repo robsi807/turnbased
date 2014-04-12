@@ -33,7 +33,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private int ownerId;
 
 	private int moveDistanceLeft;
-	private int maxMoveDistanceLeft = 3;
+	private int maxMoveDistance;
 	private int damage;
 	private int hp;
 
@@ -41,7 +41,6 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		super(tileX, tileY);
 		this.world = world;
 		this.ownerId = ownerId;
-		moveDistanceLeft = maxMoveDistanceLeft;
 		playerColorHighlight = getWorld().getPlayers().getPlayerWithId(ownerId)
 				.getColor();
 	}
@@ -52,6 +51,11 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		for (DistanceNode d : moveableTiles) {
 			d.tile.setDistanceFromSelectedUnit(d.distance);
 		}
+		world.getGameScreen().getGuiHandler().addSelectedUnitButtons(getGuiItems());
+	}
+
+	public void startAttack() {
+
 	}
 
 	/**
@@ -101,6 +105,10 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 			d.tile.setDistanceFromSelectedUnit(0);
 		}
 	}
+	
+	public abstract ArrayList<String> getGuiItems();
+	
+	public abstract void handleGuiClick(String action);
 
 	@Override
 	public void move(int tileX, int tileY) {
@@ -112,7 +120,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	}
 
 	public int getMoveMaxDistance() {
-		return maxMoveDistanceLeft;
+		return maxMoveDistance;
 	}
 
 	public int getMoveDistanceLeft() {
@@ -176,6 +184,15 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	public void setDamage(int damage) {
 		this.damage = damage;
+	}
+
+	public int getMaxMoveDistance() {
+		return maxMoveDistance;
+	}
+
+	public void setMaxMoveDistance(int maxMoveDistance) {
+		this.maxMoveDistance = maxMoveDistance;
+		moveDistanceLeft = maxMoveDistance;
 	}
 
 }

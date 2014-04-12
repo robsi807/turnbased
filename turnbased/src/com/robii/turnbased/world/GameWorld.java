@@ -116,7 +116,7 @@ public class GameWorld {
 	}
 	
 	public Camera getGuiCamera(){
-		return gameScreen.getGuiCamera();
+		return gameScreen.getGuiHandler().getGuiCam();
 	}
 
 }
