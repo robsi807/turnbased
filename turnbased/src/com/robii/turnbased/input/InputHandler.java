@@ -98,6 +98,7 @@ public class InputHandler implements GestureListener {
 			if (btn.getHitbox().contains(new Vector2(x, y)))
 				return btn;
 		}
+		
 		return null;
 	}
 

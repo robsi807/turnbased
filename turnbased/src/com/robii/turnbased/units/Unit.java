@@ -1,10 +1,7 @@
 package com.robii.turnbased.units;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -17,7 +14,6 @@ import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Tile.TileType;
 import com.robii.turnbased.gameobjects.Visible;
 import com.robii.turnbased.input.FontHandler;
-import com.robii.turnbased.input.GuiButton;
 import com.robii.turnbased.input.SelectedUnitGuiButton;
 import com.robii.turnbased.world.GameWorld;
 
@@ -82,46 +78,8 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	}
 
-	/**
-	 * Gets the tiles that the unit can move from its current position.
-	 * 
-	 * @return Null if no valid movement is found
-	 */
-	private ArrayList<DistanceNode> getPossibleMovement() {
 
-		ArrayList<DistanceNode> possibleMovement = new ArrayList<DistanceNode>();
-		ArrayList<Tile> visited = new ArrayList<Tile>();
-		DistanceNode currentTile;
 
-		Queue<DistanceNode> tileQueue = new LinkedList<DistanceNode>();
-
-		tileQueue.add(new DistanceNode(0, world.getMap().getTile(getTileX(),
-				getTileY())));
-		while (!tileQueue.isEmpty()) {
-			currentTile = tileQueue.poll();
-			if (currentTile.distance <= getMoveDistanceLeft()
-					&& !visited.contains(currentTile.tile)
-					&& canMoveToTile(currentTile.tile)) {
-				possibleMovement.add(currentTile);
-
-				for (Tile t : world.getMap().getAdjecentTiles(
-						currentTile.tile.getTileX(),
-						currentTile.tile.getTileY())) {
-					tileQueue
-							.add(new DistanceNode(currentTile.distance + 1, t));
-				}
-				visited.add(currentTile.tile);
-			}
-		}
-		possibleMovement.remove(world.getMap().getTile(getTileX(), getTileY()));
-		return possibleMovement;
-	}
-
-	private boolean canMoveToTile(Tile tile) {
-		return (tile.getChildObject() == null || tile == world.getMap()
-				.getTile(getTileX(), getTileY()))
-				&& tile.getType() != TileType.MOUNTAIN;
-	}
 
 	@Override
 	public void onUnselect() {

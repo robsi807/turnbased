@@ -28,26 +28,12 @@ public class GuiHandler {
 
 	public GuiHandler(GameWorld world) {
 		this.world = world;
-		creatingHud();
+		createGui();
 	}
 
-	private void creatingHud() {
+	private void createGui() {
 		buttons = new ArrayList<GuiButton>();
 		buttons.add(new GuiButton(5, 5, "End turn", world) {
-
-			@Override
-			public void onClick() {
-				world.endTurn();
-			}
-		});
-		buttons.add(new GuiButton(50, 50, "End turn", world) {
-
-			@Override
-			public void onClick() {
-				world.endTurn();
-			}
-		});
-		buttons.add(new GuiButton(100, 100, "End turn", world) {
 
 			@Override
 			public void onClick() {
@@ -92,7 +78,7 @@ public class GuiHandler {
 				TextureHandler.guiCoin.getRegionHeight() * 2);
 
 		// drawing the gold text
-		
+
 		guiFont.setColor(Color.YELLOW);
 		guiFont.draw(guiBatch, "x"
 				+ world.getPlayers().getCurrentPlayer().getGold(),
@@ -103,7 +89,7 @@ public class GuiHandler {
 		for (GuiButton btn : buttons) {
 			btn.draw(guiBatch, debugRenderer);
 		}
-		
+
 		// this code makes it lag, why?
 		if (selectedUnitButtons != null) {
 			for (GuiButton btn : selectedUnitButtons) {
@@ -129,7 +115,8 @@ public class GuiHandler {
 		return guiCam;
 	}
 
-	public void addSelectedUnitButtons(ArrayList<SelectedUnitGuiButton> guiButtons) {
+	public void addSelectedUnitButtons(
+			ArrayList<SelectedUnitGuiButton> guiButtons) {
 		addButtons = guiButtons;
 	}
 
@@ -139,6 +126,10 @@ public class GuiHandler {
 
 	public BitmapFont getGuiFont() {
 		return guiFont;
+	}
+
+	public ArrayList<SelectedUnitGuiButton> getSelectedUnitButtons() {
+		return selectedUnitButtons;
 	}
 
 }
