@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.actions.ActionBase;
+import com.robii.turnbased.actions.ActionMove;
 import com.robii.turnbased.algorithm.DistanceNode;
 import com.robii.turnbased.gameobjects.Clickable;
 import com.robii.turnbased.gameobjects.GameObject;
@@ -22,6 +24,9 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	private GameWorld world;
 	private ArrayList<DistanceNode> moveableTiles;
+	private ArrayList<ActionBase> actions;
+	
+	private ActionMove moveAction;
 
 	private Color playerColorHighlight;
 	private Color startColor;
@@ -36,31 +41,29 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private int damage;
 	private int hp;
 
-	public Unit(int tileX, int tileY, int ownerId, GameWorld world) {
+	public Unit(int tileX, int tileY, int ownerId, GameWorld world, ArrayList<ActionBase> actions) {
 		super(tileX, tileY);
 		this.world = world;
 		this.ownerId = ownerId;
+		this.actions = actions;
+		
+		moveAction = new ActionMove(world, this);
 		playerColorHighlight = getWorld().getPlayers().getPlayerWithId(ownerId)
 				.getColor();
 	}
 
 	@Override
 	public void onClick() {
-		moveableTiles = getPossibleMovement();
-		for (DistanceNode d : moveableTiles) {
-			d.tile.setDistanceFromSelectedUnit(d.distance);
-		}
-		world.getGameScreen().getGuiHandler()
-				.addSelectedUnitButtons(generateGuiButtons(getGuiItems()));
+		moveAction.use();
 	}
 
-	private ArrayList<SelectedUnitGuiButton> generateGuiButtons(
-			ArrayList<String> guiItems) {
+	public ArrayList<SelectedUnitGuiButton> generateGuiButtons() {
 		ArrayList<SelectedUnitGuiButton> buttons = new ArrayList<SelectedUnitGuiButton>();
 		SelectedUnitGuiButton addbutton;
-		for (int i = 0; i < guiItems.size(); i++) {
-			addbutton = new SelectedUnitGuiButton(0, i * 40, guiItems.get(i),
-					world, guiItems.get(i));
+		
+		for (int i = 0; i < getActions().size(); i++) {
+			addbutton = new SelectedUnitGuiButton(0, i * 40, getActions().get(i),
+					world, getActions().get(i));
 			addbutton.getHitbox().x = world.getGameScreen().getGuiHandler().getGuiCam().viewportWidth
 					- addbutton.getHitbox().getWidth();
 			buttons.add(addbutton);
@@ -174,5 +177,11 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 		this.maxMoveDistance = maxMoveDistance;
 		moveDistanceLeft = maxMoveDistance;
 	}
+
+	public ArrayList<ActionBase> getActions() {
+		return actions;
+	}
+	
+	
 
 }

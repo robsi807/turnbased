@@ -5,12 +5,20 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 import com.robii.turnbased.algorithm.DistanceNode;
-import com.robii.turnbased.algorithm.SelectTileCriteria;
+import com.robii.turnbased.algorithm.TileSelector;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.units.Unit;
 import com.robii.turnbased.world.GameWorld;
 
 public abstract class ActionBase {
+
+	private TileSelector selector;
+	private String actionName;
+	
+	public ActionBase(TileSelector selector, String actionName) {
+		this.selector = selector;
+		this.actionName = actionName;
+	}
 
 	public abstract boolean use();
 	
@@ -19,7 +27,7 @@ public abstract class ActionBase {
 	 * 
 	 * @return Null if no valid movement is found
 	 */
-	protected ArrayList<DistanceNode> getPossibleMovement(GameWorld world, Unit unit, SelectTileCriteria criteria) {
+	protected ArrayList<DistanceNode> getPossibleTilesForAction(GameWorld world, Unit unit) {
 
 		ArrayList<DistanceNode> possibleMovement = new ArrayList<DistanceNode>();
 		ArrayList<Tile> visited = new ArrayList<Tile>();
@@ -31,7 +39,7 @@ public abstract class ActionBase {
 				unit.getTileY())));
 		while (!tileQueue.isEmpty()) {
 			currentTile = tileQueue.poll();
-			if (!visited.contains(currentTile.tile) && criteria.isTileValid(unit, visited, currentTile.distance)) {
+			if (!visited.contains(currentTile.tile) && selector.isTileValid(unit, currentTile)) {
 				possibleMovement.add(currentTile);
 
 				for (Tile t : world.getMap().getAdjecentTiles(
@@ -46,7 +54,13 @@ public abstract class ActionBase {
 		possibleMovement.remove(world.getMap().getTile(unit.getTileX(), unit.getTileY()));
 		return possibleMovement;
 	}
-	
-	
+
+	public TileSelector getSelector() {
+		return selector;
+	}
+
+	public String getActionName() {
+		return actionName;
+	}
 	
 }
