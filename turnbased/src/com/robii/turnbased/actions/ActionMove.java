@@ -30,7 +30,7 @@ public class ActionMove extends ActionBase {
 		}
 
 		world.getGameScreen().getGuiHandler()
-				.addSelectedUnitButtons(unit.generateGuiButtons(unit.getGuiItems()));
+				.addSelectedUnitButtons(unit.generateGuiButtons());
 
 		return false;
 	}

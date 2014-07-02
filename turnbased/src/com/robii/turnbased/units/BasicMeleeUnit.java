@@ -15,7 +15,7 @@ public class BasicMeleeUnit extends Unit {
 	private int MAX_MOVE_DISTANCE = 3;
 
 	public BasicMeleeUnit(int tileX, int tileY, int ownerId, GameWorld world) {
-		super(tileX, tileY, ownerId, world, null);
+		super(tileX, tileY, ownerId, world);
 		setHp(MAX_HP);
 		setDamage(DAMAGE);
 		setMaxMoveDistance(MAX_MOVE_DISTANCE);
@@ -44,21 +44,11 @@ public class BasicMeleeUnit extends Unit {
 
 	@Override
 	public ArrayList<String> getGuiItems() {
-		
-		
+
 		ArrayList<String> guiItems = new ArrayList<String>();
 		guiItems.add("Attack");
 		guiItems.add("Kill");
 		return guiItems;
-	}
-
-	@Override
-	public void handleGuiClick(String action) {
-		System.out.println("handleGuiClick: " + action);
-		if (action.equals("Attack")) {
-			System.out.println("@basicmelee: attack should happen");
-		}
-
 	}
 
 }

@@ -4,13 +4,15 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.robii.turnbased.actions.ActionBase;
 import com.robii.turnbased.gfx.TextureHandler;
 import com.robii.turnbased.units.Unit;
 import com.robii.turnbased.world.GameWorld;
 
 public class Town extends Unit {
 
-	public Town(int tileX, int tileY, int ownerId, GameWorld world) {
+	public Town(int tileX, int tileY, int ownerId, GameWorld world,
+			ArrayList<ActionBase> actions) {
 		super(tileX, tileY, ownerId, world);
 	}
 
@@ -49,8 +51,4 @@ public class Town extends Unit {
 		return guiItems;
 	}
 
-	@Override
-	public void handleGuiClick(String action) {
-		// TODO
-	}
 }

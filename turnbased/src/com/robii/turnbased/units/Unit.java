@@ -25,7 +25,7 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private GameWorld world;
 	private ArrayList<DistanceNode> moveableTiles;
 	private ArrayList<ActionBase> actions;
-	
+
 	private ActionMove moveAction;
 
 	private Color playerColorHighlight;
@@ -41,12 +41,12 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	private int damage;
 	private int hp;
 
-	public Unit(int tileX, int tileY, int ownerId, GameWorld world, ArrayList<ActionBase> actions) {
+	public Unit(int tileX, int tileY, int ownerId, GameWorld world) {
 		super(tileX, tileY);
 		this.world = world;
 		this.ownerId = ownerId;
-		this.actions = actions;
-		
+		actions = new ArrayList<ActionBase>();
+
 		moveAction = new ActionMove(world, this);
 		playerColorHighlight = getWorld().getPlayers().getPlayerWithId(ownerId)
 				.getColor();
@@ -60,16 +60,17 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	public ArrayList<SelectedUnitGuiButton> generateGuiButtons() {
 		ArrayList<SelectedUnitGuiButton> buttons = new ArrayList<SelectedUnitGuiButton>();
 		SelectedUnitGuiButton addbutton;
-		
+
 		for (int i = 0; i < getActions().size(); i++) {
-			addbutton = new SelectedUnitGuiButton(0, i * 40, getActions().get(i),
-					world, getActions().get(i));
-			addbutton.getHitbox().x = world.getGameScreen().getGuiHandler().getGuiCam().viewportWidth
+			addbutton = new SelectedUnitGuiButton(0, i * 40, getActions()
+					.get(i).getActionName(), world, getActions().get(i));
+			addbutton.getHitbox().x = world.getGameScreen().getGuiHandler()
+					.getGuiCam().viewportWidth
 					- addbutton.getHitbox().getWidth();
 			buttons.add(addbutton);
 
 		}
-		
+
 		System.out.println("adding " + buttons.size() + " buttons to gui");
 
 		return buttons;
@@ -81,17 +82,12 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 
 	}
 
-
-
-
 	@Override
 	public void onUnselect() {
 		for (DistanceNode d : moveableTiles) {
 			d.tile.setDistanceFromSelectedUnit(0);
 		}
 	}
-
-	public abstract void handleGuiClick(String action);
 
 	@Override
 	public void move(int tileX, int tileY) {
@@ -181,7 +177,5 @@ public abstract class Unit extends GameObject implements Visible, Clickable,
 	public ArrayList<ActionBase> getActions() {
 		return actions;
 	}
-	
-	
 
 }

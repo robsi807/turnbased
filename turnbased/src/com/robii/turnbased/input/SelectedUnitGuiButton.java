@@ -1,21 +1,21 @@
 package com.robii.turnbased.input;
 
+import com.robii.turnbased.actions.ActionBase;
 import com.robii.turnbased.world.GameWorld;
 
-public class SelectedUnitGuiButton extends GuiButton{
-	
-	private String action;
-	private GameWorld world;
-	
-	public SelectedUnitGuiButton(int x, int y, String text, GameWorld world, String action) {
+public class SelectedUnitGuiButton extends GuiButton {
+
+	private ActionBase action;
+
+	public SelectedUnitGuiButton(int x, int y, String text, GameWorld world,
+			ActionBase action) {
 		super(x, y, text, world);
 		this.action = action;
-		this.world = world;
 	}
 
 	@Override
 	public void onClick() {
-		world.getSelectedObject().handleGuiClick(action);
+		action.use();
 	}
 
 }

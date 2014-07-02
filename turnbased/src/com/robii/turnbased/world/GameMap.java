@@ -4,6 +4,8 @@ import java.awt.Point;
 import java.util.ArrayList;
 
 import com.robii.turnbased.Constants;
+import com.robii.turnbased.actions.ActionBase;
+import com.robii.turnbased.actions.ActionMove;
 import com.robii.turnbased.gameobjects.Tile;
 import com.robii.turnbased.gameobjects.Town;
 import com.robii.turnbased.gameobjects.Tile.TileType;
@@ -63,7 +65,10 @@ public class GameMap {
 	}
 
 	public void addTown(int tileX, int tileY, int player) {
-		Town addTown = new Town(tileX, tileY, player, world);
+
+		ArrayList<ActionBase> actions = new ArrayList<ActionBase>();
+
+		Town addTown = new Town(tileX, tileY, player, world, actions);
 		world.getPlayers().getPlayerWithId(player).addUnit(addTown);
 		map[tileX][tileY].setChildObject(addTown);
 
